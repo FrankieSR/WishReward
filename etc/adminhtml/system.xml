@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="wishreward" translate="label" sortOrder="100">
+            <label>Wish Reward</label>
+        </tab>
+        <section id="wishreward_settings" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Wish Reward Settings</label>
+            <tab>wishreward</tab>
+            <resource>Doroshko_WishReward::config</resource>
+            <group id="general" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Settings</label>
+                <field id="enable_module" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Module</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="enable_wheel" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Lottery Wheel</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="default_rule_ids" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default Rule IDs</label>
+                    <comment>Enter rule IDs separated by commas (e.g., 6,7,8)</comment>
+                </field>
+                <field id="wheel_sectors" translate="label" type="textarea" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Wheel Sectors</label>
+                    <comment>Enter JSON-encoded data for sectors. Example: [{"label": "Prize 1", "rule_id": 6, "probability": 30}, {"label": "Prize 2", "rule_id": 7, "probability": 20}]</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

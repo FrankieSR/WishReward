@@ -1,0 +1,38 @@
+<div id="form-container" class="wish-form-container">
+    <!-- Форма для пожелания -->
+    <form id="wish-form" data-validate>
+        <label for="wish-message"><?= $this->escapeHtml(__('Write your New Year wish:')) ?></label>
+        <textarea 
+            id="wish-message" 
+            name="wish_message" 
+            class="required-entry" 
+            placeholder="<?= $this->escapeHtml(__('Type your wish here...')) ?>">
+        </textarea>
+        <button type="submit" class="action primary">
+            <?= $this->escapeHtml(__('Submit')) ?>
+        </button>
+    </form>
+
+    <!-- Контейнер для отображения колеса -->
+    <div id="wheel-container" style="display: none;">
+        <!-- Колесо будет рендериться здесь -->
+    </div>
+
+    <!-- Контейнер для отображения кода купона -->
+    <div id="coupon-container" style="display: none;">
+        <p><?= $this->escapeHtml(__('Congratulations! Your coupon code is:')) ?> <span id="coupon-code"></span></p>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+{
+    "#wish-form": {
+        "validation": {},
+        "Doroshko_WishReward/js/form-handler": {
+            "ajaxUrl": "<?= $this->escapeUrl($block->getFormActionUrl()) ?>",
+            "wheelSettings": <?= json_encode($block->getWheelSettings()) ?>,
+            "showWheel": <?= json_encode($block->isWheelEnabled()) ?>
+        }
+    }
+}
+</script>
