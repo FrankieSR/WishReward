@@ -31,8 +31,9 @@ define([
                 url: ajaxUrl,
                 type: 'GET',
                 success: function (response) {
+                    console.log(response, 'response');
                     $('#wish-modal').html(response.html);
-                    $('#wish-modal').trigger('contentUpdated'); // Для совместимости с другими слушателями
+                    $('#wish-modal').trigger('contentUpdated');
                     
                     // Если нужна валидация, добавляем её вручную
                     if ($('#wish-form').length > 0) {

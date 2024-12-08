@@ -4,17 +4,21 @@ namespace Doroshko\WishReward\Block;
 
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Customer\Model\Session as CustomerSession;
 
-class WishContent extends Template
+class WishRewardConfig extends Template
 {
     private ScopeConfigInterface $scopeConfig;
+    private CustomerSession $customerSession;
 
     public function __construct(
         Template\Context $context,
         ScopeConfigInterface $scopeConfig,
+        CustomerSession $customerSession,
         array $data = []
     ) {
         $this->scopeConfig = $scopeConfig;
+        $this->customerSession = $customerSession;
         parent::__construct($context, $data);
     }
 
@@ -26,12 +30,20 @@ class WishContent extends Template
         );
     }
 
-    public function getWheelSettings(): array
+    public function getDefaultRuleId(): int
     {
-        return [
-            'items' => $this->getWheelSectors(),
-            'rotationDuration' => $this->getRotationDuration()
-        ];
+        return (int)$this->scopeConfig->getValue(
+            'wishreward_settings/general/default_rule_id',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    public function isGuestAllowed(): bool
+    {
+        return $this->scopeConfig->isSetFlag(
+            'wishreward_settings/general/allow_guests',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
     }
 
     public function getWheelSectors(): array
@@ -41,13 +53,18 @@ class WishContent extends Template
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
 
-        $sectors = json_decode($sectorsJson, true) ?: [];
+        $sectors = json_decode($sectorsJson, true) ?? [];
 
         foreach ($sectors as $index => &$sector) {
             $sector['id'] = $index + 1;
         }
 
         return $sectors;
+    }
+
+    public function isCustomerLoggedIn(): bool
+    {
+        return $this->customerSession->isLoggedIn();
     }
 
     public function getRotationDuration(): int

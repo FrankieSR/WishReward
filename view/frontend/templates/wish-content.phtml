@@ -23,6 +23,8 @@
         <p><?= $this->escapeHtml(__('Congratulations! Your coupon code is:')) ?> <span id="coupon-code"></span></p>
     </div>
 </div>
+<?= $this->escapeUrl($block->getFormActionUrl()) ?>
+<?= json_encode($block->getWheelSettings()) ?>
 
 <script type="text/x-magento-init">
 {

@@ -14,17 +14,28 @@
                     <label>Enable Module</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="allow_guests" translate="label comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow Guests to Submit Wishes</label>
+                    <comment>Enable this option to allow guests to submit wishes. Otherwise, only logged-in customers can participate.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
                 <field id="enable_wheel" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Lottery Wheel</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="default_rule_ids" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Default Rule IDs</label>
-                    <comment>Enter rule IDs separated by commas (e.g., 6,7,8)</comment>
+                <field id="default_rule_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default Rule ID</label>
+                    <comment>Enter the rule ID to generate a coupon when the wheel is disabled.</comment>
                 </field>
-                <field id="wheel_sectors" translate="label" type="textarea" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="wheel_sectors" translate="label" type="textarea" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Wheel Sectors</label>
-                    <comment>Enter JSON-encoded data for sectors. Example: [{"label": "Prize 1", "rule_id": 6, "probability": 30}, {"label": "Prize 2", "rule_id": 7, "probability": 20}]</comment>
+                    <comment>
+                        Enter JSON for sectors. Example: [{"id": 1, "label": "Prize 1", "rule_id": 6, "probability": 30}, {"id": 2, "label": "Try Again", "rule_id": null, "probability": 40}]
+                    </comment>
+                </field>
+                <field id="rotation_duration" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Rotation Duration (ms)</label>
+                    <comment>Enter the duration of wheel rotation in milliseconds. Default: 5000</comment>
                 </field>
             </group>
         </section>

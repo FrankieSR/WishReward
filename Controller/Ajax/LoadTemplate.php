@@ -1,23 +1,22 @@
 <?php
 
-namespace Doroshko\wishreward\Controller\Ajax;
+namespace Doroshko\WishReward\Controller\Ajax;
 
+use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Framework\View\Result\PageFactory;
+use Magento\Framework\View\Element\Template;
 
-class LoadTemplate extends \Magento\Framework\App\Action\Action
+class LoadTemplate extends Action
 {
-    protected $jsonFactory;
-    protected $pageFactory;
+    private JsonFactory $jsonFactory;
 
     public function __construct(
-        \Magento\Framework\App\Action\Context $context,
-        JsonFactory $jsonFactory,
-        PageFactory $pageFactory
+        Context $context,
+        JsonFactory $jsonFactory
     ) {
-        parent::__construct($context);
         $this->jsonFactory = $jsonFactory;
-        $this->pageFactory = $pageFactory;
+        parent::__construct($context);
     }
 
     public function execute()
@@ -25,9 +24,8 @@ class LoadTemplate extends \Magento\Framework\App\Action\Action
         $result = $this->jsonFactory->create();
 
         try {
-            // Рендерим HTML содержимое блока
             $html = $this->_view->getLayout()
-                ->createBlock(\Doroshko\wishreward\Block\WishContent::class)
+                ->createBlock(\Doroshko\WishReward\Block\WishContentRenderer::class)
                 ->setTemplate('Doroshko_WishReward::wish-content.phtml')
                 ->toHtml();
 

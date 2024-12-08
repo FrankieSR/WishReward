@@ -11,6 +11,7 @@ define(["jquery", "jquery/ui"], function ($) {
         _create: function () {
             this._renderWheel();
             this.currentRotation = 0;
+            console.log("CREATED");
         },
 
         _renderWheel: function () {
@@ -27,6 +28,7 @@ define(["jquery", "jquery/ui"], function ($) {
             svg.setAttribute("height", `${wheelRadius * 2}px`);
             svg.setAttribute("viewBox", `0 0 ${wheelRadius * 2} ${wheelRadius * 2}`);
 
+            console.log(this.options.items);
             this.options.items.forEach((item, index) => {
                 const startAngle = index * sectorAngle - 90; // Сектор начинается от -90°
                 const endAngle = (index + 1) * sectorAngle - 90;
@@ -71,12 +73,20 @@ define(["jquery", "jquery/ui"], function ($) {
             this.element.append(svg).append(pointer);
         },
 
-        spinToItem: function (value) {
+        spinToItem: function (id) {
+            console.log(this.options.items, id, 'this.options.items');
+
             const targetIndex = this.options.items.findIndex(
-                (item) => item.value === value
+                (item) => item.id === id
             );
+            const targetItem = this.options.items.find(
+                (item) => item.id === id
+            );
+
+            console.log(targetItem, 'targetItem');
+
             if (targetIndex === -1) {
-                console.error(`Value "${value}" not found in items.`);
+                console.error(`Value "${targetItem.label}" not found in items.`);
                 return;
             }
 

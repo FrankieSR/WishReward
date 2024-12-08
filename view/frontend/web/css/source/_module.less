@@ -1,48 +1,168 @@
-//
-//  Common
-//  _____________________________________________
+@primary-color: red;
+@secondary-color: green;
+@background-gradient: linear-gradient(to right, @primary-color, @secondary-color);
+@text-color: @color-white;
+@button-hover-color: darken(@primary-color, 10%);
+@textarea-background: rgba(255, 255, 255, 0.9);
+@textarea-text-color: @color-black;
+@textarea-border-color: @color-white;
+@padding: @indent__xl;
+@border-radius: 10px;
+@box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+@font-family: @font-family__base;
 
-& when (@media-common = true) {
-    #wheel-container {
-        position: relative;
-        width: 300px;
-        height: 300px;
+.wish-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .lib-css(padding, @padding);
+    background: @background-gradient;
+    .lib-css(border-radius, @border-radius);
+    .lib-css(box-shadow, @box-shadow);
+    margin: @padding auto;
+    max-width: 500px;
+    text-align: center;
+    .lib-css(color, @text-color);
+    .lib-css(font-family, @font-family);
+    animation: fadeIn 1s ease-in-out;
+}
 
-        .pointer {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            width: 20px;
-            height: 20px;
-            background-color: black;
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            transform: translateX(-50%);
-            z-index: 10;
-        }
+.wish-form {
+    width: 100%;
+    margin-bottom: @padding;
 
-        .wheel {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transform-origin: center;
-            border-radius: 50%;
-            overflow: hidden;
+    .form-label {
+        display: block;
+        .lib-font-size(@font-size__base);
+        font-weight: @font-weight__bold;
+        .lib-css(color, @text-color);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        margin-bottom: @indent__s;
+    }
+
+    .form-textarea {
+        width: 100%;
+        height: 100px;
+        padding: @indent__m;
+        .lib-font-size(@font-size__base);
+        border: 2px solid @textarea-border-color;
+        .lib-css(border-radius, @border-radius);
+        background: @textarea-background;
+        .lib-css(color, @textarea-text-color);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        resize: none;
+        margin-bottom: @indent__m;
+    }
+
+    .form-submit-button {
+        padding: @indent__s @indent__m;
+        .lib-font-size(@font-size__base);
+        background: @primary-color;
+        .lib-css(color, @text-color);
+        border: none;
+        .lib-css(border-radius, 5px);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        font-weight: @font-weight__bold;
+
+        &:hover {
+            background: @button-hover-color;
+            transform: scale(1.05);
         }
     }
 }
 
-//
-//  Desktop
-//  _____________________________________________
+.wheel-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: @padding;
 
-.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .wheel-message {
+        .lib-font-size(@font-size__base);
+        font-weight: @font-weight__bold;
+        .lib-css(color, @text-color);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        margin-bottom: @indent__s;
+    }
 
+    .spin-button {
+        padding: @indent__s @indent__m;
+        .lib-font-size(@font-size__base);
+        background: @secondary-color;
+        .lib-css(color, @text-color);
+        border: none;
+        .lib-css(border-radius, 5px);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        font-weight: @font-weight__bold;
+
+        &:hover {
+            background: darken(@secondary-color, 10%);
+            transform: scale(1.05);
+        }
+    }
 }
 
-//
-//  Mobile
-//  _____________________________________________
+.coupon-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .lib-css(padding, @padding);
+    background: @background-gradient;
+    .lib-css(border-radius, @border-radius);
+    .lib-css(box-shadow, @box-shadow);
+    margin-top: @padding;
+    max-width: 400px;
+    text-align: center;
+    .lib-css(color, @text-color);
+    .lib-css(font-family, @font-family);
+    animation: fadeIn 1s ease-in-out;
 
-.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+    .congrats-message {
+        .lib-font-size(14px);
+        font-weight: @font-weight__bold;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+        margin-bottom: @indent__s;
+    }
 
+    .coupon-code {
+        .lib-font-size(@font-size__l);
+        .lib-css(color, @primary-color);
+        .lib-css(border-radius, 3px);
+        display: inline-block;
+        font-weight: @font-weight__bold;
+        background: @color-white;
+        padding: @indent__xs @indent__s;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        animation: glow 1.5s infinite alternate;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glow {
+    from {
+        background: @color-white;
+        .lib-css(color, @primary-color);
+        box-shadow: 0 0 10px @primary-color;
+    }
+    to {
+        background: lighten(@primary-color, 40%);
+        .lib-css(color, darken(@primary-color, 20%));
+        box-shadow: 0 0 20px darken(@primary-color, 10%);
+    }
 }

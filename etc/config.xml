@@ -4,9 +4,11 @@
         <wishreward_settings>
             <general>
                 <enable_module>1</enable_module>
+                <allow_guests>1</allow_guests>
                 <enable_wheel>1</enable_wheel>
                 <default_rule_ids>6,7</default_rule_ids>
-                <wheel_sectors>[{"label": "Prize 1", "rule_id": 6, "probability": 30}, {"label": "Prize 2", "rule_id": 7, "probability": 20}, {"label": "Prize 3", "rule_id": 8, "probability": 50}]</wheel_sectors>
+                <wheel_sectors>[{"label": "Oh Well, Maybe Next Time", "rule_id": null, "probability": 100}]</wheel_sectors>
+                <rotation_duration>5000</rotation_duration>
             </general>
         </wishreward_settings>
     </default>
