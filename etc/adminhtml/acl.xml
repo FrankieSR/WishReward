@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resource id="Magento_Backend::admin">
+            <resource id="Doroshko_WishReward::main" title="Wish Reward" sortOrder="55">
+                <resource id="Doroshko_WishReward::config" title="Configuration" />
+                <resource id="Doroshko_WishReward::wishes" title="Manage Wishes" />
+            </resource>
+        </resource>
+    </acl>
+</config>

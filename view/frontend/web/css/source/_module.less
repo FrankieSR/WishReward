@@ -74,11 +74,12 @@
     }
 }
 
-.wheel-container {
+.wish-wheel-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: @padding;
+    position: relative;
 
     .wheel-message {
         .lib-font-size(@font-size__base);
@@ -107,7 +108,11 @@
     }
 }
 
-.coupon-container {
+#wish-wheel-box {
+    position: relative;
+}
+
+.wish-coupon-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -130,7 +135,7 @@
         margin-bottom: @indent__s;
     }
 
-    .coupon-code {
+    .wish-coupon-code {
         .lib-font-size(@font-size__l);
         .lib-css(color, @primary-color);
         .lib-css(border-radius, 3px);

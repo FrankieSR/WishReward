@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="wishreward_wishes" resource="default" engine="innodb" comment="WishReward Wishes Table">
+        <column name="wish_id" xsi:type="int" unsigned="true" nullable="false" identity="true" comment="Wish ID"/>
+        <column name="customer_id" xsi:type="int" unsigned="true" nullable="true" comment="Customer ID"/>
+        <column name="wish_message" xsi:type="text" nullable="false" comment="Wish Message"/>
+        <column name="created_at" xsi:type="timestamp" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+
+        <!-- Add primary key -->
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="wish_id"/>
+        </constraint>
+
+        <!-- Foreign key for customer_id -->
+        <constraint xsi:type="foreign" referenceId="FK_WISHREWARD_WISHES_CUSTOMER_ID" column="customer_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="SET NULL"/>
+
+        <!-- Index on customer_id -->
+        <constraint xsi:type="unique" referenceId="UNQ_WISHREWARD_WISHES_CUSTOMER_ID">
+            <column name="customer_id"/>
+        </constraint>
+    </table>
+</schema>

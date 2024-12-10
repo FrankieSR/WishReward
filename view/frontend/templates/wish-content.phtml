@@ -1,3 +1,4 @@
+<?php if ($block->canShowForm()): ?>
 <div id="form-container" class="wish-form-container">
     <!-- Форма для пожелания -->
     <form id="wish-form" data-validate>
@@ -14,17 +15,23 @@
     </form>
 
     <!-- Контейнер для отображения колеса -->
-    <div id="wheel-container" style="display: none;">
-        <!-- Колесо будет рендериться здесь -->
+    <div id="wish-wheel-container" class="wish-wheel-container" style="display: none;">
+        <div id="wish-wheel-box"></div>
     </div>
 
     <!-- Контейнер для отображения кода купона -->
-    <div id="coupon-container" style="display: none;">
-        <p><?= $this->escapeHtml(__('Congratulations! Your coupon code is:')) ?> <span id="coupon-code"></span></p>
+    <div id="wish-coupon-container" style="display: none;">
+        <p><?= $this->escapeHtml(__('Congratulations! Your coupon code is:')) ?> <span id="wish-coupon-code"></span></p>
     </div>
 </div>
-<?= $this->escapeUrl($block->getFormActionUrl()) ?>
-<?= json_encode($block->getWheelSettings()) ?>
+<?php else: ?>
+    <div class="wish-login-prompt">
+        <p><?= $this->escapeHtml(__('Please log in to participate')) ?></p>
+        <a href="<?= $block->getLoginUrl() ?>" class="action login-link">
+            <?= $this->escapeHtml(__('Log in here')) ?>
+        </a>
+    </div>
+<?php endif; ?>
 
 <script type="text/x-magento-init">
 {
@@ -32,7 +39,8 @@
         "validation": {},
         "Doroshko_WishReward/js/form-handler": {
             "ajaxUrl": "<?= $this->escapeUrl($block->getFormActionUrl()) ?>",
-            "wheelSettings": <?= json_encode($block->getWheelSettings()) ?>,
+            "wheelSectors": <?= json_encode($block->getWheelSectors()) ?>,
+            "rotationDuration": <?= json_encode($block->getRotationDuration()) ?>,
             "showWheel": <?= json_encode($block->isWheelEnabled()) ?>
         }
     }

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Ui/etc/ui_configuration.xsd">
+    <dataSource name="test_wishreward_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Doroshko\WishReward\Model\Wishes\DataProvider</argument>
+            <argument name="name" xsi:type="string">test_wishreward_data_provider</argument>
+            <argument name="primaryFieldName" xsi:type="string">wish_id</argument>
+            <argument name="requestFieldName" xsi:type="string">wish_id</argument>
+        </argument>
+    </dataSource>
+    <columns name="test_wishreward_columns">
+        <column name="wish_id" class="Magento\Ui\Component\Listing\Columns\Column">
+            <settings>
+                <label translate="true">Wish ID</label>
+            </settings>
+        </column>
+        <column name="customer_id" class="Magento\Ui\Component\Listing\Columns\Column">
+            <settings>
+                <label translate="true">Customer ID</label>
+            </settings>
+        </column>
+    </columns>
+</listing>

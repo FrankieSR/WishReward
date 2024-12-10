@@ -5,28 +5,36 @@ namespace Doroshko\WishReward\Controller\Ajax;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Framework\Stdlib\DateTime\DateTime;
-use Magento\SalesRule\Model\CouponFactory;
-use Doroshko\WishReward\Block\WishRewardConfig;
+use Doroshko\WishReward\Model\Config;
+use Doroshko\WishReward\Model\CouponGenerator;
+use Doroshko\WishReward\Model\ProbabilityCalculator;
+use Doroshko\WishReward\Model\WishFactory;
+use Magento\Customer\Model\Session as CustomerSession;
 
 class SubmitWish extends Action
 {
     private JsonFactory $resultJsonFactory;
-    private CouponFactory $couponFactory;
-    private DateTime $dateTime;
-    private WishRewardConfig $config;
+    private Config $config;
+    private CouponGenerator $couponGenerator;
+    private ProbabilityCalculator $probabilityCalculator;
+    private WishFactory $wishFactory;
+    private CustomerSession $customerSession;
 
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
-        CouponFactory $couponFactory,
-        DateTime $dateTime,
-        WishRewardConfig $config // Внедряем блок конфигурации
+        Config $config,
+        CouponGenerator $couponGenerator,
+        ProbabilityCalculator $probabilityCalculator,
+        WishFactory $wishFactory,
+        CustomerSession $customerSession
     ) {
         $this->resultJsonFactory = $resultJsonFactory;
-        $this->couponFactory = $couponFactory;
-        $this->dateTime = $dateTime;
         $this->config = $config;
+        $this->couponGenerator = $couponGenerator;
+        $this->probabilityCalculator = $probabilityCalculator;
+        $this->wishFactory = $wishFactory;
+        $this->customerSession = $customerSession;
         parent::__construct($context);
     }
 
@@ -36,50 +44,65 @@ class SubmitWish extends Action
         $postData = $this->getRequest()->getPostValue();
         $action = $postData['action'] ?? 'submit';
 
-        if ($action === 'submit') {
-            return $this->handleFormSubmit($resultJson);
+        switch ($action) {
+            case 'submit':
+                return $this->handleFormSubmit($resultJson, $postData);
+            case 'spin':
+                return $this->handleWheelSpin($resultJson);
+            default:
+                return $resultJson->setData(['success' => false, 'message' => __('Invalid action.')]);
         }
-
-        if ($action === 'spin') {
-            return $this->handleWheelSpin($resultJson);
-        }
-
-        return $resultJson->setData(['success' => false, 'message' => __('Invalid action.')]);
     }
 
-    private function handleFormSubmit($resultJson)
+    private function handleFormSubmit($resultJson, array $postData)
     {
-        if (!$this->config->isWheelEnabled()) {
-            $defaultRuleId = $this->config->getDefaultRuleId();
-
-            $couponCode = $this->generateCoupon($defaultRuleId);
-
-            if ($couponCode) {
-                return $resultJson->setData([
-                    'success' => true,
-                    'coupon_code' => $couponCode,
-                    'message' => __('Your coupon code is: %1', $couponCode)
-                ]);
-            }
-
-            return $resultJson->setData(['success' => false, 'message' => __('Failed to generate coupon.')]);
+        $wishMessage = $postData['wish_message'] ?? '';
+        if (empty($wishMessage)) {
+            return $resultJson->setData(['success' => false, 'message' => __('Wish message is required.')]);
         }
 
-        return $resultJson->setData(['success' => true, 'showWheel' => true]);
+        try {
+            $this->saveWish($wishMessage);
+
+            if (!$this->config->isWheelEnabled()) {
+                $defaultRuleId = $this->config->getDefaultRuleId();
+
+                $couponCode = $this->couponGenerator->generate($defaultRuleId);
+
+                if ($couponCode) {
+                    return $resultJson->setData([
+                        'success' => true,
+                        'coupon_code' => $couponCode,
+                        'message' => __('Your coupon code is: %1', $couponCode)
+                    ]);
+                }
+
+                return $resultJson->setData(['success' => false, 'message' => __('Failed to generate coupon.')]);
+            }
+
+            return $resultJson->setData(['success' => true, 'showWheel' => true]);
+
+        } catch (\Exception $e) {
+            return $resultJson->setData(['success' => false, 'message' => __('Failed to save the wish: %1', $e->getMessage())]);
+        }
     }
 
     private function handleWheelSpin($resultJson)
     {
-        $sectors = $this->config->getWheelSectors(); // Получаем сектора из конфигурации
+        $sectors = $this->config->getWheelSectors();
 
         if (empty($sectors)) {
             return $resultJson->setData(['success' => false, 'message' => __('Wheel sectors are not configured.')]);
         }
 
-        $winningSector = $this->getWinningSector($sectors);
+        try {
+            $winningSector = $this->probabilityCalculator->getWinningSector($sectors);
+        } catch (\InvalidArgumentException $e) {
+            return $resultJson->setData(['success' => false, 'message' => $e->getMessage()]);
+        }
 
         if ($winningSector['rule_id'] !== null) {
-            $couponCode = $this->generateCoupon($winningSector['rule_id']);
+            $couponCode = $this->couponGenerator->generate($winningSector['rule_id']);
 
             if ($couponCode) {
                 return $resultJson->setData([
@@ -101,41 +124,15 @@ class SubmitWish extends Action
         ]);
     }
 
-    private function getWinningSector(array $sectors): array
+    private function saveWish(string $wishMessage): void
     {
-        $totalProbability = array_sum(array_column($sectors, 'probability'));
-        $random = rand(1, $totalProbability);
-        $currentSum = 0;
+        $customerId = $this->customerSession->isLoggedIn() ? $this->customerSession->getCustomerId() : null;
 
-        foreach ($sectors as $sector) {
-            $currentSum += $sector['probability'];
-            if ($random <= $currentSum) {
-                return $sector;
-            }
-        }
-
-        return end($sectors);
-    }
-
-    private function generateCoupon(int $ruleId): ?string
-    {
-        try {
-            $couponCode = strtoupper(bin2hex(random_bytes(4)));
-
-            $coupon = $this->couponFactory->create();
-            $coupon->setRuleId($ruleId)
-                ->setCode($couponCode)
-                ->setUsageLimit(1)
-                ->setUsagePerCustomer(1)
-                ->setExpirationDate($this->dateTime->gmtDate('Y-m-d H:i:s', strtotime('+7 days')))
-                ->setCreatedAt($this->dateTime->gmtDate())
-                ->setType(2)
-                ->save();
-
-            return $couponCode;
-        } catch (\Exception $e) {
-            $this->messageManager->addErrorMessage(__('Error: ') . $e->getMessage());
-            return null;
-        }
+        $wish = $this->wishFactory->create();
+        $wish->setData([
+            'wish_message' => $wishMessage,
+            'customer_id' => $customerId
+        ]);
+        $wish->save();
     }
 }

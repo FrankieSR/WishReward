@@ -25,7 +25,7 @@ class LoadTemplate extends Action
 
         try {
             $html = $this->_view->getLayout()
-                ->createBlock(\Doroshko\WishReward\Block\WishContentRenderer::class)
+                ->createBlock(\Doroshko\WishReward\Block\WishContent::class)
                 ->setTemplate('Doroshko_WishReward::wish-content.phtml')
                 ->toHtml();
 
