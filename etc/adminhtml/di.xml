@@ -40,19 +40,17 @@
         </arguments>
     </type>
 
-    <!-- Регистрация DataProvider -->
-    <type name="Doroshko\WishReward\Model\Wishes\DataProvider">
-        <arguments>
-            <argument name="collectionFactory" xsi:type="object">Doroshko\WishReward\Model\ResourceModel\Wish\CollectionFactory</argument>
-            <argument name="request" xsi:type="object">Magento\Framework\App\RequestInterface</argument>
-        </arguments>
-    </type>
-
     <!-- Регистрация блока WishContentRenderer -->
     <type name="Doroshko\WishReward\Block\WishContentRenderer">
         <arguments>
             <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session</argument>
             <argument name="config" xsi:type="object">Doroshko\WishReward\Model\Config</argument>
+        </arguments>
+    </type>
+
+    <type name="Doroshko\WishReward\Model\Wishes\DataProvider">
+        <arguments>
+            <argument name="collectionFactory" xsi:type="object">Doroshko\WishReward\Model\ResourceModel\Wish\CollectionFactory</argument>
         </arguments>
     </type>
 </config>

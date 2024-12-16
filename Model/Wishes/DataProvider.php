@@ -42,7 +42,6 @@ class DataProvider extends AbstractDataProvider
             }
         }
     
-        print_r(json_encode($this->loadedData));
         return $this->loadedData;
     }
     

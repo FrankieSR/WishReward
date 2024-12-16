@@ -1,23 +1,77 @@
 <?xml version="1.0"?>
-<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="urn:magento:module:Ui/etc/ui_configuration.xsd">
-    <dataSource name="test_wishreward_data_source">
-        <argument name="dataProvider" xsi:type="configurableObject">
-            <argument name="class" xsi:type="string">Doroshko\WishReward\Model\Wishes\DataProvider</argument>
-            <argument name="name" xsi:type="string">test_wishreward_data_provider</argument>
-            <argument name="primaryFieldName" xsi:type="string">wish_id</argument>
-            <argument name="requestFieldName" xsi:type="string">wish_id</argument>
-        </argument>
-    </dataSource>
-    <columns name="test_wishreward_columns">
-        <column name="wish_id" class="Magento\Ui\Component\Listing\Columns\Column">
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">wishreward_wishes_listing.wishes_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>wishes_columns</spinner>
+        <deps>
+            <dep>wishreward_wishes_listing.wishes_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="wishes_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="cacheRequests" xsi:type="boolean">false</param>
+                <param name="requestConfig" xsi:type="array">
+                    <item name="method" xsi:type="string">POST</item>
+                </param>
+            </storageConfig>
+            <updateUrl path="mui/index/render" />
+        </settings>
+        <aclResource>Doroshko_WishReward::wishes</aclResource>
+        <dataProvider class="Doroshko\WishReward\Model\Wishes\DataProvider" name="wishes_data_source">
             <settings>
+                <requestFieldName>wish_id</requestFieldName>
+                <primaryFieldName>wish_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+
+    <listingToolbar name="listing_top">
+        <bookmark name="bookmarks" />
+        <columnsControls name="columns_controls" />
+        <filters name="listing_filters">
+            <settings>
+                <statefull>
+                    <property name="applied" xsi:type="boolean">false</property>
+                </statefull>
+            </settings>
+        </filters>
+        <paging name="listing_paging" />
+    </listingToolbar>
+
+    <columns name="wishes_columns">
+        <selectionsColumn name="ids" sortOrder="0">
+            <settings>
+                <indexField>wish_id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="wish_id" sortOrder="10">
+            <settings>
+                <filter>textRange</filter>
                 <label translate="true">Wish ID</label>
+                <sorting>asc</sorting>
             </settings>
         </column>
-        <column name="customer_id" class="Magento\Ui\Component\Listing\Columns\Column">
+        <column name="customer_id" sortOrder="20">
             <settings>
+                <filter>text</filter>
                 <label translate="true">Customer ID</label>
+            </settings>
+        </column>
+        <column name="wish_message" sortOrder="30">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Wish Message</label>
+            </settings>
+        </column>
+        <column name="created_at" sortOrder="40">
+            <settings>
+                <filter>dateRange</filter>
+                <label translate="true">Created At</label>
             </settings>
         </column>
     </columns>

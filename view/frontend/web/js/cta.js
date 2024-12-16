@@ -8,40 +8,40 @@ define([
 
     return function (config, element) {
         const ajaxUrl = config.ajaxUrl; // URL для подгрузки формы
-
-        $(element).on('click', function () {
+        console.log($(element));
+        $(element).find('#open-wish-modal').on('click', function () {
+            console.log("CLICKED");
             // Проверяем, есть ли уже модальное окно
-            if ($('#wish-modal').length === 0) {
-                // Создаем контейнер для модального окна
-                $('body').append('<div id="wish-modal" style="display: none;"></div>');
-            }
+            // if ($('#wish-modal').length === 0) {
+            //     // Создаем контейнер для модального окна
+            //     $('body').append('<div id="wish-modal" style="display: none;"></div>');
+            // }
 
-            const modalOptions = {
-                type: 'popup',
-                title: $.mage.__('New Year Wish'),
-                modalClass: 'wish-modal-class',
-                responsive: true,
-                innerScroll: true,
-                buttons: false,
-            };
+            // const modalOptions = {
+            //     type: 'popup',
+            //     title: $.mage.__('New Year Wish'),
+            //     modalClass: 'wish-modal-class',
+            //     responsive: true,
+            //     innerScroll: true,
+            //     buttons: false,
+            // };
 
-            const wishModal = modal(modalOptions, $('#wish-modal'));
+            // const wishModal = modal(modalOptions, $('#wish-modal'));
 
             $.ajax({
                 url: ajaxUrl,
                 type: 'GET',
                 success: function (response) {
                     console.log(response, 'response');
-                    $('#wish-modal').html(response.html);
-                    $('#wish-modal').trigger('contentUpdated');
+                    $('.cta-wish-content').hide();
+                    $(element).find('.main-wish-content').html(response.html);
+                    $(element).trigger('contentUpdated');
                     
-                    // Если нужна валидация, добавляем её вручную
                     if ($('#wish-form').length > 0) {
-                        $('#wish-form').validation(); // Включаем валидацию формы
+                        $('#wish-form').validation();
                     }
 
-                    // Открываем модальное окно
-                    $('#wish-modal').modal('openModal');
+                    $(element).removeClass('minimized').addClass('expanded');
                 },
                 error: function (error) {
                     console.log(error);

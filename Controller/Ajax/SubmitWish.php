@@ -10,6 +10,7 @@ use Doroshko\WishReward\Model\CouponGenerator;
 use Doroshko\WishReward\Model\ProbabilityCalculator;
 use Doroshko\WishReward\Model\WishFactory;
 use Magento\Customer\Model\Session as CustomerSession;
+use Doroshko\WishReward\Model\LocalMLValidator;
 
 class SubmitWish extends Action
 {
@@ -19,6 +20,7 @@ class SubmitWish extends Action
     private ProbabilityCalculator $probabilityCalculator;
     private WishFactory $wishFactory;
     private CustomerSession $customerSession;
+    private LocalMLValidator $mlValidator;
 
     public function __construct(
         Context $context,
@@ -27,7 +29,8 @@ class SubmitWish extends Action
         CouponGenerator $couponGenerator,
         ProbabilityCalculator $probabilityCalculator,
         WishFactory $wishFactory,
-        CustomerSession $customerSession
+        CustomerSession $customerSession,
+        LocalMLValidator $mlValidator
     ) {
         $this->resultJsonFactory = $resultJsonFactory;
         $this->config = $config;
@@ -35,6 +38,7 @@ class SubmitWish extends Action
         $this->probabilityCalculator = $probabilityCalculator;
         $this->wishFactory = $wishFactory;
         $this->customerSession = $customerSession;
+        $this->mlValidator = $mlValidator;
         parent::__construct($context);
     }
 
@@ -57,8 +61,16 @@ class SubmitWish extends Action
     private function handleFormSubmit($resultJson, array $postData)
     {
         $wishMessage = $postData['wish_message'] ?? '';
+
         if (empty($wishMessage)) {
             return $resultJson->setData(['success' => false, 'message' => __('Wish message is required.')]);
+        }
+
+        $status = $this->mlValidator->validateText($wishMessage)['status'];
+        $reason = $this->mlValidator->validateText($wishMessage)['reason'];
+
+        if ($status == 'invalid') {
+            return $resultJson->setData(['success' => false, 'status' => $status, 'reason' => $reason]);
         }
 
         try {
@@ -80,7 +92,7 @@ class SubmitWish extends Action
                 return $resultJson->setData(['success' => false, 'message' => __('Failed to generate coupon.')]);
             }
 
-            return $resultJson->setData(['success' => true, 'showWheel' => true]);
+            return $resultJson->setData(['success' => true, 'canSpinWheel' => true]);
 
         } catch (\Exception $e) {
             return $resultJson->setData(['success' => false, 'message' => __('Failed to save the wish: %1', $e->getMessage())]);

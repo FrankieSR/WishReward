@@ -1,42 +1,47 @@
+<?php
+/**
+ * @var $block \Doroshko\WishReward\Block\WishContent
+ */
+?>
+
 <?php if ($block->canShowForm()): ?>
-<div id="form-container" class="wish-form-container">
-    <!-- Форма для пожелания -->
-    <form id="wish-form" data-validate>
-        <label for="wish-message"><?= $this->escapeHtml(__('Write your New Year wish:')) ?></label>
-        <textarea 
-            id="wish-message" 
-            name="wish_message" 
-            class="required-entry" 
-            placeholder="<?= $this->escapeHtml(__('Type your wish here...')) ?>">
-        </textarea>
-        <button type="submit" class="action primary">
-            <?= $this->escapeHtml(__('Submit')) ?>
-        </button>
-    </form>
+<div id="wish-form-container" class="wish-form-container">
+    <div class="wish-content-container">
+        <form id="wish-form" class="wish-form" data-validate>
+            <label for="wish-message"><?= $block->escapeHtml(__('Write a Christmas wish and spin the wheel of luck')) ?></label>
+            <textarea 
+                id="wish-message" 
+                name="wish_message" 
+                class="required-entry"
+                data-validate="{required:true}"
+                placeholder="<?= $block->escapeHtml(__('Type your wish here...')) ?>">
+            </textarea>
+            <span class=""></span>
+            <button type="submit" class="wish-button">
+                <?= $block->escapeHtml(__('Send and claim')) ?>
+            </button>
+        </form>
 
-    <!-- Контейнер для отображения колеса -->
-    <div id="wish-wheel-container" class="wish-wheel-container" style="display: none;">
-        <div id="wish-wheel-box"></div>
+        <div id="wish-coupon-container" style="display: none;">
+            <p><?= $block->escapeHtml(__('Congratulations! Your coupon code is:')) ?> <span id="wish-coupon-code"></span></p>
+        </div>
     </div>
-
-    <!-- Контейнер для отображения кода купона -->
-    <div id="wish-coupon-container" style="display: none;">
-        <p><?= $this->escapeHtml(__('Congratulations! Your coupon code is:')) ?> <span id="wish-coupon-code"></span></p>
+    <div id="wish-wheel-container" class="wish-wheel-container" style="display: none;">
+        <div id="wish-wheel-box" class="wish-wheel-box"></div>
     </div>
 </div>
 <?php else: ?>
     <div class="wish-login-prompt">
-        <p><?= $this->escapeHtml(__('Please log in to participate')) ?></p>
+        <p><?= $block->escapeHtml(__('Please log in to participate')) ?></p>
         <a href="<?= $block->getLoginUrl() ?>" class="action login-link">
-            <?= $this->escapeHtml(__('Log in here')) ?>
+            <?= $block->escapeHtml(__('Log in here')) ?>
         </a>
     </div>
 <?php endif; ?>
 
 <script type="text/x-magento-init">
 {
-    "#wish-form": {
-        "validation": {},
+    "#wish-form-container": {
         "Doroshko_WishReward/js/form-handler": {
             "ajaxUrl": "<?= $this->escapeUrl($block->getFormActionUrl()) ?>",
             "wheelSectors": <?= json_encode($block->getWheelSectors()) ?>,

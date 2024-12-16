@@ -4,48 +4,50 @@ define(["jquery", "jquery/ui"], function ($) {
     $.widget("doroshko.lotteryWheel", {
         options: {
             items: [],
-            rotationDuration: 5000,
+            rotationDuration: 6000,
             onSpinEnd: null,
-            defaultColors: ["#f44336", "#4caf50"], // Красный и зеленый по умолчанию
-            borderColor: "#000", // Черная граница секторов
-            centerColor: "#fff", // Центральный круг белого цвета
-            textColor: "#000", // Черный цвет текста
-            borderWidth: 2, // Ширина линии границы
-            outerRingColor: "#000", // Цвет внешней полосы
-            outerRingWidth: 10, // Ширина внешней полосы
+            colors: ["#f5d3e8", "#ffffff"], // Розовый и белый
+            textColor: "#000", // Чёрный цвет текста
+            borderColor: "#d3b8d8", // Светло-фиолетовая граница
+            borderWidth: 3, // Толщина границы
+            centerColor: "#fff", // Белый центр колеса
+            pointerColor: "#f5d3e8", // Розовый указатель
+            outerRingColor: "#ec5aa1", // Внешний розовый обод
+            outerRingWidth: 10,
+            wheelRadius: 160
         },
 
         _create: function () {
-            this._applyDefaultColors();
+            this._applyStyleTheme();
             this._renderWheel();
             this.currentRotation = 0;
         },
 
-        _applyDefaultColors: function () {
+        _applyStyleTheme: function () {
             this.options.items.forEach((item, index) => {
                 if (!item.color) {
-                    item.color =
-                        this.options.defaultColors[index % this.options.defaultColors.length];
+                    item.color = this.options.colors[index % this.options.colors.length];
                 }
             });
         },
 
         _renderWheel: function () {
+            console.log(this.options.wheelRadius, 'mainContainer');
             const svgNS = "http://www.w3.org/2000/svg";
             const numItems = this.options.items.length;
             const sectorAngle = 360 / numItems;
-            const wheelRadius = 150;
+            const wheelRadius = this.options.wheelRadius;
             const centerX = wheelRadius + this.options.outerRingWidth;
             const centerY = wheelRadius + this.options.outerRingWidth;
             const totalRadius = wheelRadius + this.options.outerRingWidth;
-
+        
             const svg = document.createElementNS(svgNS, "svg");
             svg.setAttribute("class", "wheel");
             svg.setAttribute("width", `${totalRadius * 2}px`);
             svg.setAttribute("height", `${totalRadius * 2}px`);
             svg.setAttribute("viewBox", `0 0 ${totalRadius * 2} ${totalRadius * 2}`);
-
-            // Внешняя полоса
+        
+            // Внешний обод
             const outerRing = document.createElementNS(svgNS, "circle");
             outerRing.setAttribute("cx", centerX);
             outerRing.setAttribute("cy", centerY);
@@ -54,21 +56,21 @@ define(["jquery", "jquery/ui"], function ($) {
             outerRing.setAttribute("stroke", this.options.outerRingColor);
             outerRing.setAttribute("stroke-width", this.options.outerRingWidth);
             svg.appendChild(outerRing);
-
+        
             // Генерация секторов
             this.options.items.forEach((item, index) => {
                 const startAngle = index * sectorAngle - 90;
                 const endAngle = (index + 1) * sectorAngle - 90;
-
+        
+                const largeArcFlag = sectorAngle > 180 ? 1 : 0;
+        
                 const x1 = centerX + wheelRadius * Math.cos((startAngle * Math.PI) / 180);
                 const y1 = centerY + wheelRadius * Math.sin((startAngle * Math.PI) / 180);
-
                 const x2 = centerX + wheelRadius * Math.cos((endAngle * Math.PI) / 180);
                 const y2 = centerY + wheelRadius * Math.sin((endAngle * Math.PI) / 180);
-
+        
+                // Создание сектора
                 const path = document.createElementNS(svgNS, "path");
-                const largeArcFlag = sectorAngle > 180 ? 1 : 0;
-
                 path.setAttribute(
                     "d",
                     `M ${centerX} ${centerY} L ${x1} ${y1} A ${wheelRadius} ${wheelRadius} 0 ${largeArcFlag} 1 ${x2} ${y2} Z`
@@ -76,57 +78,53 @@ define(["jquery", "jquery/ui"], function ($) {
                 path.setAttribute("fill", item.color);
                 path.setAttribute("stroke", this.options.borderColor);
                 path.setAttribute("stroke-width", this.options.borderWidth);
-
+                path.setAttribute("stroke-linejoin", "round");
                 svg.appendChild(path);
-
+        
                 // Текст в секторе
-                const textAngle = startAngle + sectorAngle / 2;
-                const textX =
-                    centerX + (wheelRadius / 1.5) * Math.cos((textAngle * Math.PI) / 180);
-                const textY =
-                    centerY + (wheelRadius / 1.5) * Math.sin((textAngle * Math.PI) / 180);
-
+                const textAngle = (startAngle + endAngle) / 2; // Центр сектора
+                const textRadius = wheelRadius * 0.7; // Радиус для текста
+                const textX = centerX + textRadius * Math.cos((textAngle * Math.PI) / 180);
+                const textY = centerY + textRadius * Math.sin((textAngle * Math.PI) / 180);
+        
                 const text = document.createElementNS(svgNS, "text");
                 text.setAttribute("x", textX);
                 text.setAttribute("y", textY);
                 text.setAttribute("fill", this.options.textColor);
-                text.setAttribute("font-size", "12");
+                text.setAttribute("font-size", "16");
                 text.setAttribute("font-family", "Arial, sans-serif");
+                text.setAttribute("font-weight", "bold");
                 text.setAttribute("text-anchor", "middle");
                 text.setAttribute("alignment-baseline", "middle");
+                text.setAttribute(
+                    "transform",
+                    `rotate(${textAngle}, ${textX}, ${textY})`
+                );
                 text.textContent = item.label;
-
+        
                 svg.appendChild(text);
             });
-
-            // Центральный круг
-            const centerCircle = document.createElementNS(svgNS, "circle");
-            centerCircle.setAttribute("cx", centerX);
-            centerCircle.setAttribute("cy", centerY);
-            centerCircle.setAttribute("r", wheelRadius / 6);
-            centerCircle.setAttribute("fill", this.options.centerColor);
-            centerCircle.setAttribute("stroke", this.options.borderColor);
-            centerCircle.setAttribute("stroke-width", this.options.borderWidth);
-
-            svg.appendChild(centerCircle);
-
-            // Указатель (Pointer)
-            const pointer = $("<div>", { class: "pointer" }).css({
+        
+            // Указатель (капля)
+            const pointer = $("<div>", { class: "wheel-pointer" }).css({
                 position: "absolute",
-                width: "30px",
+                width: "20px",
                 height: "50px",
-                backgroundColor: this.options.borderColor,
-                clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)",
-                top: `-${this.options.outerRingWidth + 40}px`,
+                backgroundColor: "#ffffff",
+                border: "3px solid #d3d3d3",
+                borderRadius: "50%",
+                clipPath: "polygon(50% 100%, 0% 0%, 100% 0%)",
+                top: `0px`,
                 left: "50%",
                 transform: "translateX(-50%)",
                 zIndex: 10,
             });
-
+        
             this.element.append(svg).append(pointer);
         },
-
-        spinToItem: function (id) {
+        
+        
+        spinToItem: function (id, data = {}) {
             const targetIndex = this.options.items.findIndex((item) => item.id === id);
             if (targetIndex === -1) {
                 console.error(`Item with ID "${id}" not found.`);
@@ -165,7 +163,8 @@ define(["jquery", "jquery/ui"], function ($) {
                     this.currentRotation = currentRotation % 360;
 
                     if (typeof this.options.onSpinEnd === "function") {
-                        this.options.onSpinEnd(id);
+                        const winningItem = this.options.items[targetIndex];
+                        this.options.onSpinEnd({ id: winningItem.id, label: winningItem.label, data });
                     }
                 }
             };
