@@ -10,9 +10,13 @@
         <div class="cta-wish-content-image"></div>
         <div class="cta-wish-content-info">
             <p><?= $block->escapeHtml(__('Share your New Year wish and unlock a special discount!')); ?></p>
-            <button class="cta-wish-button wish-button" id="open-wish-modal">
-                <?= $block->escapeHtml(__('Make a Wish')); ?>
-            </button>
+
+            <div id="button-container">
+                <button class="the-primary-button wish-button" id="open-wish-modal">
+                    <span class="button-text"><?= $block->escapeHtml(__('Make a Wish')); ?></span>
+                    <span class="round" />
+                </button>
+            </div>
         </div>
     </div>
     

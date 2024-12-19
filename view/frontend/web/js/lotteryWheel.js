@@ -6,15 +6,15 @@ define(["jquery", "jquery/ui"], function ($) {
             items: [],
             rotationDuration: 6000,
             onSpinEnd: null,
-            colors: ["#f5d3e8", "#ffffff"], // Розовый и белый
-            textColor: "#000", // Чёрный цвет текста
-            borderColor: "#d3b8d8", // Светло-фиолетовая граница
-            borderWidth: 3, // Толщина границы
-            centerColor: "#fff", // Белый центр колеса
-            pointerColor: "#f5d3e8", // Розовый указатель
-            outerRingColor: "#ec5aa1", // Внешний розовый обод
-            outerRingWidth: 10,
-            wheelRadius: 160
+            colors: ["#FFD700", "#f81e3d"],
+            textColor: "#fff",
+            borderColor: "#07403a",
+            borderWidth: 0,
+            centerColor: "#07403a",
+            pointerColor: "#fff",
+            outerRingColor: "#07403a",
+            outerRingWidth: 8,
+            wheelRadius: 200
         },
 
         _create: function () {
@@ -25,6 +25,7 @@ define(["jquery", "jquery/ui"], function ($) {
 
         _applyStyleTheme: function () {
             this.options.items.forEach((item, index) => {
+                console.log(this.options.items, 'this.options.items');
                 if (!item.color) {
                     item.color = this.options.colors[index % this.options.colors.length];
                 }

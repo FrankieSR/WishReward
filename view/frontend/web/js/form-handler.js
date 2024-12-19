@@ -17,6 +17,7 @@ define(['jquery', 'Doroshko_WishReward/js/lotteryWheel', 'mage/validation'], fun
         function initializeUI() {
             couponContainer.hide();
 
+            addButtonEffect();
             displayWheel();
         }
 
@@ -35,7 +36,7 @@ define(['jquery', 'Doroshko_WishReward/js/lotteryWheel', 'mage/validation'], fun
                 type: 'POST',
                 data: formData,
                 success: handleFormSubmitSuccess,
-                error: handleAjaxError
+                error: handleAjaxError,
             });
         }
 
@@ -72,9 +73,8 @@ define(['jquery', 'Doroshko_WishReward/js/lotteryWheel', 'mage/validation'], fun
             wheelBox.lotteryWheel({
                 items: config.wheelSectors,
                 rotationDuration: config.rotationDuration || 5000,
-                wheelRadius: 220,
+                wheelRadius: 250,
                 onSpinEnd: function (result) {
-                    form.hide();
                     displayCoupon(result.data.coupon, result.label);
                 },
             });
@@ -84,9 +84,11 @@ define(['jquery', 'Doroshko_WishReward/js/lotteryWheel', 'mage/validation'], fun
             $.ajax({
                 url: config.ajaxUrl,
                 type: 'POST',
-                data: { action: 'spin' },
+                data: {
+                    action: 'spin'
+                },
                 success: handleSpinSuccess,
-                error: handleAjaxError
+                error: handleAjaxError,
             });
         }
 
@@ -100,18 +102,60 @@ define(['jquery', 'Doroshko_WishReward/js/lotteryWheel', 'mage/validation'], fun
             const coupon = spinResponse.coupon_code;
 
             wheelBox.lotteryWheel('spinToItem', winningSectorId, {
-                coupon
+                coupon,
             });
         }
 
         function displayCoupon(couponCodeValue) {
             console.log(couponCodeValue);
-            couponContainer.show();
             couponCode.text(couponCodeValue);
+
+            form.hide();
+            wheelContainer.hide();
+
+            couponContainer.show();
         }
 
         function handleAjaxError(error) {
             console.error('AJAX error:', error);
+        }
+
+        function addButtonEffect() {
+            const $parentBlock = $(element);
+
+            $parentBlock.on('mouseenter', '.the-primary-button', function (event) {
+                const $button = $(this);
+                const $item = $button.find('.round');
+
+                $button.addClass('animate');
+                console.log('ENTERED');
+
+                let buttonX = event.offsetX;
+                let buttonY = event.offsetY;
+
+                $item.css({
+                    top: buttonY < 24 ? '0px' : '48px',
+                    left: `${buttonX}px`,
+                    width: '1px',
+                    height: '1px'
+                });
+            });
+
+            $parentBlock.on('mouseleave', '.the-primary-button', function (event) {
+                const $button = $(this);
+                const $item = $button.find('.round');
+
+                $button.removeClass('animate');
+
+                let buttonX = event.offsetX;
+                let buttonY = event.offsetY;
+
+                $item.css({
+                    top: buttonY < 24 ? '0px' : '48px',
+                    left: `${buttonX}px`
+                });
+            });
+
         }
     };
 });

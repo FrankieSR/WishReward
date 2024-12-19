@@ -74,5 +74,29 @@
                 <label translate="true">Created At</label>
             </settings>
         </column>
+
+        <!-- Actions Column -->
+        <actionsColumn name="actions" sortOrder="50" class="Magento\Ui\Component\Listing\Columns\Column">
+            <settings>
+                <label translate="true">Actions</label>
+                <indexField>wish_id</indexField>
+            </settings>
+            <action name="delete">
+                <argument name="data" xsi:type="array">
+                    <item name="confirm" xsi:type="array">
+                        <item name="title" xsi:type="string" translate="true">Delete Row</item>
+                        <item name="message" xsi:type="string" translate="true">Are you sure you want to delete this row?</item>
+                    </item>
+                    <item name="url" xsi:type="array">
+                        <item name="path" xsi:type="string">wishreward/wishes/delete</item>
+                        <item name="params" xsi:type="array">
+                            <item name="wish_id" xsi:type="string">${wish_id}</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Delete</item>
+                </argument>
+            </action>
+        </actionsColumn>
+
     </columns>
 </listing>
