@@ -129,3 +129,5 @@ Feel free to use, modify, and distribute this module as needed.
 ---
 
 Enjoy spreading festive joy with this interactive and engaging module for Magento 2! 🎄🎁
+
+Contact: https://artem-doroshko.dev/
