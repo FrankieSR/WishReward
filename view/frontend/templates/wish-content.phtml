@@ -10,7 +10,7 @@
         <canvas id="snow-canvas"></canvas>
         <div class="wish-content-container">
             <form id="wish-form" class="wish-form" data-validate>
-                <label for="wish-message flavors-regular"><?= $block->escapeHtml(__('Write a Christmas wish and spin the wheel of luck')) ?></label>
+                <label for="wish-message"><?= $block->escapeHtml(__('Write a Christmas wish and spin the wheel')) ?></label>
                 <textarea
                     id="wish-message"
                     name="wish_message"
@@ -18,7 +18,7 @@
                     data-validate="{required:true}"
                     placeholder="<?= $block->escapeHtml(__('Type your wish here...')) ?>"></textarea>
 
-                <div class="error-block"><?= $block->escapeHtml(__("This is not a Christmas or New Year's greeting")) ?></div>
+                <div class="wish-error-block" style="display: none;"><?= $block->escapeHtml(__("This is not a Christmas greeting")) ?></div>
                 <div id="button-container">
                     <button type="submit" class="the-primary-button wish-button">
                         <span class="button-text"><?= $block->escapeHtml(__('Send and claim')) ?></span>
@@ -26,9 +26,10 @@
                     </button>
                 </div>
             </form>
-        </div>
-        <div id="wish-wheel-container" class="wish-wheel-container" style="display: none;">
-            <div id="wish-wheel-box" class="wish-wheel-box"></div>
+
+            <div id="wish-wheel-container" class="wish-wheel-container">
+                <div id="wish-wheel-box" class="wish-wheel-box"></div>
+            </div>
         </div>
 
         <div id="wish-coupon-container" class="wish-coupon-container" style="display: none;">
@@ -39,14 +40,14 @@
             </p>
         </div>
 
-        <div>
-
+        <div id="wish-nocoupon-container" class="wish-nocoupon-container" style="display: none;">
+            <h2> <?= $block->escapeHtml(__('Maybe next time')) ?></h2>
         </div>
     </div>
 <?php else: ?>
     <div class="wish-login-prompt">
         <p><?= $block->escapeHtml(__('Please log in to participate')) ?></p>
-        <a href="<?= $block->getLoginUrl() ?>" class="action login-link flavors-regular">
+        <a href="<?= $block->getLoginUrl() ?>" class="action login-link">
             <?= $block->escapeHtml(__('Log in here')) ?>
         </a>
     </div>

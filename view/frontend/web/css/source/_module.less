@@ -1,298 +1,373 @@
-@import url('https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
-@label-font-size: 20px;
-@popup-bg-color: #f81e3d;
-@popup-bg-gradient: @popup-bg-color;
-@textarea-border-color: #f81e3d;
-@button-bg-gradient: #1ec5a3;
-@button-text-color: #fff;
-@button-radius: 4px;
-@button-font-size: 18px;
-@shadow-light: rgba(0, 0, 0, 0.2);
-@shadow-strong: rgba(0, 0, 0, 0.3);
+& when (@media-common = true) {
+    .wish-form-modal {
+        .modal-header,
+        .modal-content {
+            padding: 0;
+        }
 
-.wish-form-modal {
-    .modal-header,
-    .modal-content {
-        padding: 0;
-    }
+        .modal-inner-wrap,
+        .modal-content {
+            border-radius: 12px;
+        }
 
-    .modal-inner-wrap,
-    .modal-content {
-        border-radius: 12px;
-    }
+        .modal-inner-wrap {
+            max-width: 800px;
+            background: linear-gradient(135deg, rgba(10, 25, 50, 0.9), rgba(20, 35, 70, 0.9));
+            border-radius: 16px;
+            box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.6);
+            font-family: "Arial", sans-serif;
+            color: #FFFFFF;
+            z-index: 1000;
+            text-align: center;
+            backdrop-filter: blur(5px);
 
-    .modal-inner-wrap {
-        max-width: 900px;
-        overflow: hidden;
-    }
+            &::before {
+                display: block;
+                position: absolute;
+                content: '';
+                background-image: url('@{baseDir}Doroshko_WishReward/images/snow.png');
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+                z-index: 10;
+            }
+        }
 
-    .action-close {
-        z-index: 10;
+        .action-close {
+            z-index: 10;
 
-        &::before {
-            color: #fff;
-            font-size: 18px;
+            &::before {
+                color: #fff;
+                font-size: 24px;
+            }
         }
     }
-}
 
-.wish-popup {
-    position: fixed;
-    bottom: 20px;
-    right: 0;
-    border-radius: 12px;
-    overflow: hidden;
-    z-index: 777;
-    background: @popup-bg-gradient;
-    box-shadow: 0 10px 30px @shadow-light;
+    .wish-cta {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 300px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(210, 240, 255, 0.8));
+        border-radius: 16px;
+        box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        font-family: "Arial", sans-serif;
+        color: #333333;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        text-align: center;
+        z-index: 777;
 
-    transform: translateX(100%); // Изначально скрыт
-    transition: transform 0.4s ease, width 0.4s ease, height 0.4s ease;
+        &-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0 0 10px;
+            font-family: "Bangers", serif;
+            font-weight: 400;
+            font-style: normal;
+        }
 
-    &.minimized {
-        max-width: 400px;
-        width: 100%;
-        height: 140px;
+        &-image {
+            background-image: url('@{baseDir}Doroshko_WishReward/images/snow.png');
+        }
+
+        &-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #FF4500, #FFD700);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            box-shadow: 0px 4px 10px rgba(255, 69, 0, 0.6);
+            font-family: "Roboto", serif;
+
+            &:hover {
+                transform: scale(1.05);
+                background: linear-gradient(135deg, #FF6347, #FFC107);
+                box-shadow: 0px 8px 15px rgba(255, 69, 0, 0.8);
+                border: none;
+            }
+        }
+    }
+
+    .wish-popup-visible {
         transform: translateX(0);
     }
-}
 
-.wish-popup-visible {
-    transform: translateX(0); // Плавное открытие справа
-}
-
-.wish-close-button-container {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    color: #fff;
-    width: fit-content;
-
-    button {
-        z-index: 2;
-        position: relative;
-    }
-}
-
-.flavors-regular {
-    font-family: "DynaPuff", system-ui;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-    font-variation-settings: "wdth" 100;
-}
-
-.main-wish-content {
-    background: url('@{baseDir}Doroshko_WishReward/images/bg.webp') no-repeat;
-    background-size: cover;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 100%;
-    min-height: 500px;
-    overflow: hidden;
-    position: relative;
-}
-
-.wish-button {
-    background: @button-bg-gradient;
-    color: @button-text-color;
-    border-radius: @button-radius;
-    font-size: @button-font-size;
-    text-transform: uppercase;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    padding: 20px 20px;
-    transition: .2s all ease-in-out;
-    box-shadow: 4px 8px 6px rgba(51, 51, 51, 0.15);
-
-    &:hover {
-        box-shadow: 4px 8px 12px rgba(51, 51, 51, 0.2);
-    }
-}
-
-.cta-wish-content {
-    position: relative;
-    text-align: center;
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    &-info {
-        padding: 14px;
-
-        p {
-            font-family: "DynaPuff", system-ui;
-        }
-    }
-
-    &-image {
-        width: 120px;
-        height: 100%;
-        background: url('@{baseDir}Doroshko_WishReward/images/gift.jpg') no-repeat;
-        background-size: cover;
-        z-index: 2;
-    }
-}
-
-.wish-form,
-.wish-coupon-container {
-    max-width: 340px;
-    margin-left: 40px;
-    background: #f81e3d;
-    padding: 20px;
-    height: 310px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border-radius: 16px;
-    position: relative;
-    z-index: 11;
-
-    &::before {
-        display: block;
+    #snow-canvas {
         position: absolute;
-        content: '';
-        top: -105px;
-        left: -40px;
-        width: 370px;
-        height: 240px;
-        background-image: url('@{baseDir}Doroshko_WishReward/images/snow.png');
-        background-size: cover;
-        background-repeat: no-repeat;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
         z-index: 10;
     }
 
-    label,
-    h2 {
-        font-size: @label-font-size;
-        line-height: 1.2;
-        text-transform: uppercase;
-        font-family: "DynaPuff", system-ui;
-        color: @button-text-color;
-        text-align: center;
-        display: block;
-        margin-bottom: 12px;
-    }
-
-    textarea {
-        border: 4px solid @textarea-border-color;
-        min-height: 100px;
-        background-color: #d61935;
-        color: #fff;
-        box-shadow: inset 1px 1px 3px rgba(164, 16, 37, 0.25);
-        border-radius: 2px;
-        font-size: 18px;
-        margin-bottom: 14px;
-
-        &::placeholder {
-            font-size: 18px;
-            color: #fff;
-        }
-    }
-}
-
-.wish-wheel-container {
-    width: fit-content;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    transform: translateX(30%) translateY(30%);
-    z-index: 12;
-
-    .wish-wheel-box {
-        transform: rotate(-45deg);
-        position: relative;
-    }
-}
-
-#button-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
-.the-primary-button {
-    position: relative;
-    overflow: hidden;
-    background-color: transparent;
-    text-transform: uppercase;
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 700;
-    background-color: #07403a;
-    border: 2px solid #07403a;
-
-    &:hover {
-        cursor: pointer;
-        border: 2px solid #07403a;
-    }
-
-    .round {
-        border-radius: 50%;
-        background-color: #1ec5a3;
-        position: absolute;
-        top: 5px;
-        left: 10px;
-        z-index: 1;
-        animation: scale-down .4s forwards ease-in;
-    }
-
-    .button-text {
-        position: relative;
-        z-index: 2;
-        color: #fff;
-    }
-
-    &.animate .round {
-        animation: scale-up .6s forwards ease-in-out;
-    }
-}
-
-.wish-coupon-container {
-    margin: 0 auto;
-    background-color: #f81e3d;
-    max-width: 400px;
-
-    p {
-        font-family: "DynaPuff", system-ui;
-        font-size: 24px;
-        color: #fff;
-
-        span {
-            font-size: 32px;
+    .main-wish-content {
+        label {
             display: block;
-            padding: 12px;
+            font-family: "Bangers", serif;
+            font-weight: 400;
+            font-style: normal;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
             color: #FFD700;
         }
+
+        .wish-form {
+            position: relative;
+            z-index: 15;
+            font-family: "Montserrat", serif;
+            width: min(370px, 90%);
+            border: 1px solid #fff;
+            box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.0), rgba(240, 240, 240, 0.2));
+            backdrop-filter: blur(2px);
+
+            textarea {
+                width: 100%;
+                height: 80px;
+                padding: 10px;
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid #FFFFFF;
+                border-radius: 8px;
+                color: #FFFFFF;
+                font-family: 'Roboto', sans-serif;
+                font-size: 16px;
+                resize: none;
+                box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.2);
+
+                &::placeholder {
+                    color: #CCCCCC;
+                }
+
+                &:focus {
+                    border-color: #FFD700;
+                    outline: none;
+                }
+
+                .mage-error {
+                    color: #FF4500;
+                    font-size: 14px;
+                }
+            }
+        }
+
+        .wish-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #FF4500, #FFD700);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0px 4px 10px rgba(255, 69, 0, 0.5);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+
+            &:hover {
+                transform: scale(1.05);
+                background: linear-gradient(135deg, #FF6347, #FFC107);
+                box-shadow: 0px 8px 20px rgba(255, 69, 0, 0.8);
+            }
+        }
+    }
+
+    .wish-content-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+    }
+
+    .wish-close-button-container {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        color: #fff;
+        width: fit-content;
+
+        button {
+            z-index: 2;
+            position: relative;
+        }
+    }
+
+    .wish-wheel-container {
+        .wheel-pointer {
+            transform: translateX(-50%) rotate(180deg) scale(2) !important;
+        }
+    }
+
+    .wish-coupon-container {
+        min-height: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        h2 {
+            font-family: "Bangers", serif;
+            font-weight: 400;
+            font-style: normal;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        #wish-coupon-code {
+            color: #FFD700;
+            white-space: nowrap;
+        }
+
+        .wish-nocoupon-container {
+            color: #FFD700;
+            font-size: 24px;
+        }
     }
 }
 
-@keyframes scale-up {
-    to {
-        transform: scale(600);
+.media-width(@extremum, @break) when (@extremum ='max') and (@break =@screen__m) {
+    .wish-content-container {
+        flex-direction: column;
+        margin-top: 15vh;
+    }
+
+    .wish-wheel-container {
+        position: absolute;
+        bottom: 30px;
+
+        .wheel {
+            width: 500px !important;
+            height: 500px !important;
+        }
+    }
+
+    .wish-form-modal.modal-popup {
+        .modal-inner-wrap {
+            width: 100%;
+            top: 0;
+            height: 100%;
+            max-height: 100%;
+            margin-top: 0;
+
+            &::before {
+                display: none;
+            }
+
+            .wish-content-container,
+            .wish-modal {
+                height: inherit;
+            }
+
+            .main-wish-content {
+                height: 100vh;
+                overflow: hidden;
+                padding: 0 32px;
+            }
+
+            .wish-form {
+                margin: 0 24px;
+                padding-top: 80px;
+
+                &::before {
+                    display: block;
+                    position: absolute;
+                    top: -60px;
+                    left: -40px;
+                    width: 350px;
+                    height: 160px;
+                    content: '';
+                    background-image: url('@{baseDir}Doroshko_WishReward/images/snow.png');
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    z-index: 10;
+                }
+
+                textarea {
+                    height: 200px;
+                }
+            }
+        }
+
+        .modal-content {
+            height: 100%;
+        }
+    }
+
+    #wish-coupon-code {
+        font-size: 28px;
     }
 }
 
-@keyframes scale-down {
-    from {
-        transform: scale(600);
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__m) {
+    #wish-coupon-code {
+        font-size: 40px;
     }
-    to {
-        transform: scale(0);
-    }
-}
 
-#snow-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 10;
+    .wish-form-modal {
+        .modal-content {
+            overflow: visible;
+            overflow-y: visible !important;
+        }
+
+        .modal-inner-wrap {
+            margin-top: calc(50vh - 250px);
+
+            &::before {
+                top: -75px;
+                left: -60px;
+                width: 510px;
+                height: 200px;
+            }
+        }
+    }
+
+    .wish-form {
+        margin: 40px 0px 30px 60px;
+        padding: 32px 24px;
+        min-width: 350px;
+    }
+
+    .wish-wheel-container {
+        .wish-wheel-box {
+            transform: rotate(-45deg) translate(-10%, 30%);
+            position: absolute;
+            z-index: 14;
+            right: 0;
+            top: 0;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+            border-radius: 50%;
+            position: relative;
+
+            .wheel {
+                transform: translateY(6px);
+            }
+
+            .wheel-pointer {
+                filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.5));
+            }
+        }
+    }
+
+    .wish-content-container {
+        min-height: 500px;
+    }
 }

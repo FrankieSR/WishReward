@@ -1,14 +1,17 @@
-define(['jquery', 'Doroshko_WishReward/js/lotteryWheel', 'mage/validation'], function ($) {
+define(['jquery', 'mage/translate', 'Doroshko_WishReward/js/lotteryWheelWidget', 'mage/validation'], function ($, $t) {
     'use strict';
 
     return function (config, element) {
-        console.log(element, 'element');
+        const HIDE_ERROR_DURATION = 4000;
+        const ROTATION_DURATION = 5000;
+        const WHEEL_RADIUS = 210;
+
         const form = $(element).find('form');
-        const wheelContainer = $('#wish-wheel-container');
         const wheelBox = $('#wish-wheel-box');
-        const couponCode = $('#wish-coupon-code');
+        const couponCodeBlock = $('#wish-coupon-code');
+        const nocouponCodeBlock = $('#wish-nocoupon-code');
         const couponContainer = $('#wish-coupon-container');
-        const mainContainer = $('.wish-popup.expanded');
+        const mainContainer = $('.wish-content-container');
 
         initializeUI();
 
@@ -17,20 +20,18 @@ define(['jquery', 'Doroshko_WishReward/js/lotteryWheel', 'mage/validation'], fun
         function initializeUI() {
             couponContainer.hide();
 
-            addButtonEffect();
             displayWheel();
         }
 
         function handleFormSubmit(event) {
             event.preventDefault();
 
-            // if (!form.valid()) {
-            //     return;
-            // }
+            if (!form.valid()) {
+                return;
+            }
 
             const formData = form.serialize();
 
-            // AJAX-запрос для отправки поздравления
             $.ajax({
                 url: config.ajaxUrl,
                 type: 'POST',
@@ -41,10 +42,15 @@ define(['jquery', 'Doroshko_WishReward/js/lotteryWheel', 'mage/validation'], fun
         }
 
         function handleFormSubmitSuccess(response) {
-            console.log(response, form);
+            console.log(response);
             if (response.success === false) {
-                $(form).find('input').addClass('mage-error');
-                $(form).find('input').after('<div class="mage-error">Custom error message</div>');
+                $(form).find('textarea').addClass('mage-error');
+                $(form).find('textarea').after(`<div class="mage-error message">${$t("This is not a Christmas greeting")}</div>`);
+
+                setTimeout(() => {
+                    $(form).find('.mage-error.message').remove();
+                    $(form).find('textarea').removeClass('mage-error');
+                }, HIDE_ERROR_DURATION);
 
                 return;
             } else {
@@ -64,19 +70,15 @@ define(['jquery', 'Doroshko_WishReward/js/lotteryWheel', 'mage/validation'], fun
         function displayWheel() {
             initializeWheel();
 
-            wheelContainer.show();
             couponContainer.hide();
         }
 
         function initializeWheel() {
-            console.log(config, mainContainer.height(), 'config');
+            console.log(config, 'config');
             wheelBox.lotteryWheel({
                 items: config.wheelSectors,
-                rotationDuration: config.rotationDuration || 5000,
-                wheelRadius: 250,
-                onSpinEnd: function (result) {
-                    displayCoupon(result.data.coupon, result.label);
-                },
+                rotationDuration: config.rotationDuration || ROTATION_DURATION,
+                wheelRadius: config.wheelRadius || WHEEL_RADIUS
             });
         }
 
@@ -92,70 +94,41 @@ define(['jquery', 'Doroshko_WishReward/js/lotteryWheel', 'mage/validation'], fun
             });
         }
 
-        function handleSpinSuccess(spinResponse) {
-            if (spinResponse.error) {
-                alert(spinResponse.message || 'An error occurred while spinning the wheel.');
+        function handleSpinSuccess({coupon_code, message, success, sector_id = null, error = null}) {
+            console.log(coupon_code, message, success, sector_id, 'spinResponse');
+            if (error) {
+                alert(message || 'An error occurred while spinning the wheel.');
                 return;
             }
 
-            const winningSectorId = spinResponse.sector_id;
-            const coupon = spinResponse.coupon_code;
+            const winningSectorId = sector_id;
+            const coupon = coupon_code;
 
             wheelBox.lotteryWheel('spinToItem', winningSectorId, {
                 coupon,
-            });
+            }, (result) => {
+                if (!result.data.coupon) {
+                    displayNoCoupon()
+                }
+
+                displayCoupon(result.data.coupon, result.label);
+            },);
         }
 
         function displayCoupon(couponCodeValue) {
             console.log(couponCodeValue);
-            couponCode.text(couponCodeValue);
-
-            form.hide();
-            wheelContainer.hide();
-
+            couponCodeBlock.text(couponCodeValue);
+            mainContainer.hide();
             couponContainer.show();
+        }
+
+        function displayNoCoupon() {
+            mainContainer.hide();
+            nocouponCodeBlock.show();
         }
 
         function handleAjaxError(error) {
             console.error('AJAX error:', error);
-        }
-
-        function addButtonEffect() {
-            const $parentBlock = $(element);
-
-            $parentBlock.on('mouseenter', '.the-primary-button', function (event) {
-                const $button = $(this);
-                const $item = $button.find('.round');
-
-                $button.addClass('animate');
-                console.log('ENTERED');
-
-                let buttonX = event.offsetX;
-                let buttonY = event.offsetY;
-
-                $item.css({
-                    top: buttonY < 24 ? '0px' : '48px',
-                    left: `${buttonX}px`,
-                    width: '1px',
-                    height: '1px'
-                });
-            });
-
-            $parentBlock.on('mouseleave', '.the-primary-button', function (event) {
-                const $button = $(this);
-                const $item = $button.find('.round');
-
-                $button.removeClass('animate');
-
-                let buttonX = event.offsetX;
-                let buttonY = event.offsetY;
-
-                $item.css({
-                    top: buttonY < 24 ? '0px' : '48px',
-                    left: `${buttonX}px`
-                });
-            });
-
         }
     };
 });

@@ -30,7 +30,7 @@ define([
 
         $(element).find('#open-wish-modal').on('click', function () {
             if ($('#wish-modal').length === 0) {
-                $('body').append('<div id="wish-modal" style="display: none;"></div>');
+                $('body').append('<div id="wish-modal" class="wish-modal" style="display: none;"></div>');
             }
 
             $(element).hide();
@@ -40,7 +40,9 @@ define([
                 title: null,
                 modalClass: 'wish-form-modal',
                 responsive: true,
+                outerClickHandler: false,
                 innerScroll: true,
+                responsiveClass: false,
                 buttons: false,
                 closed: function () {
                     console.log('Modal closed.');

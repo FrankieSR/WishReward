@@ -5,22 +5,15 @@
  */
 ?>
 
-<div class="wish-popup minimized" id="wish-container">
-    <div class="cta-wish-content">
-        <div class="cta-wish-content-image"></div>
-        <div class="cta-wish-content-info">
-            <p><?= $block->escapeHtml(__('Share your New Year wish and unlock a special discount!')); ?></p>
+<div class="wish-cta" id="wish-container">
+    <div class="wish-cta-image"></div>
+    <div class="wish-cta-content">
+        <h3 class="wish-cta-title"><?= $block->escapeHtml(__('Share your Christmas wish and unlock a special discount!')); ?></h3>
 
-            <div id="button-container">
-                <button class="the-primary-button wish-button" id="open-wish-modal">
-                    <span class="button-text"><?= $block->escapeHtml(__('Make a Wish')); ?></span>
-                    <span class="round" />
-                </button>
-            </div>
-        </div>
+        <button class="wish-cta-btn" id="open-wish-modal">
+            <span><?= $block->escapeHtml(__('Make a Wish')); ?></span>
+        </button>
     </div>
-    
-    <div class="main-wish-content"></div>
 </div>
 
 <script type="text/x-magento-init">

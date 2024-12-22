@@ -33,7 +33,7 @@ define([
             return {
                 x: Math.random() * this.canvas.width,
                 y: Math.random() * this.canvas.height,
-                radius: Math.random() * 3 + 1,
+                radius: Math.random() * 3 + 1.5,
                 speedY: Math.random() * 0.9,
                 speedX: Math.random() - 0.6
             };
