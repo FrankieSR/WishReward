@@ -1,3 +1,10 @@
+# ⚠️ Module Under Development ⚠️
+
+> This module is currently in active development and may not be fully functional.  
+> Please use it for testing purposes only. The final version will include additional features, optimizations, and full documentation.
+
+---
+
 
 # Magento 2 Module: Christmas & New Year Wish with Lottery Wheel
 
