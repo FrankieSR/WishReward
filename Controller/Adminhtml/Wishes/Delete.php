@@ -30,12 +30,6 @@ class Delete extends Action
      */
     private ManagerInterface $messageManager;
 
-    /**
-     * Constructor
-     *
-     * @param Context $context
-     * @param WishesFactory $wishesFactory
-     */
     public function __construct(
         Context $context,
         WishesFactory $wishesFactory,
@@ -46,11 +40,6 @@ class Delete extends Action
         $this->messageManager = $messageManager;
     }
 
-    /**
-     * Execute method to delete the wish by ID
-     *
-     * @return Redirect
-     */
     public function execute(): Redirect
     {
         $wishId = (int)$this->getRequest()->getParam('wish_id');

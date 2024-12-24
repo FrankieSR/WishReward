@@ -52,7 +52,7 @@ define([
                     flake.x += flake.speedX;
 
                     if (flake.y > canvas.height) {
-                        flake.y = 0; // Появляется сверху
+                        flake.y = 0;
                         flake.x = Math.random() * canvas.width;
                     }
 

@@ -3,30 +3,25 @@ define([
     'Magento_Ui/js/modal/modal',
     'mage/apply/main',
     'mage/validation',
-    'mage/cookies'
+    'Magento_Customer/js/customer-data',
+    'domReady!'
 ], function ($, modal, mageInit) {
     'use strict';
 
-    const WISH_POPUP_COOKIE_KEY = 'wishPopupClosed'; 
-    const COOKIE_EXPIRY_DAYS = 7;
+    const WISH_POPUP_COOKIE_KEY = 'wishPopupClosed';
 
     return function (config, element) {
         const ajaxUrl = config.ajaxUrl;
 
-        const setCookie = (name, value, days) => {
-            const expiryDate = new Date();
-            expiryDate.setDate(expiryDate.getDate() + days);
-            $.mage.cookies.set(name, value, { expires: expiryDate, path: '/' });
-        };
-
-        const isCookieSet = (name) => {
-            return $.mage.cookies.get(name) === 'true';
-        };
-
-        if (isCookieSet(WISH_POPUP_COOKIE_KEY)) {
-            console.log('Popup is already closed. No action taken.');
-            return;
+        function closePopup() {
+            customerData.set(WISH_POPUP_COOKIE_KEY, true);
         }
+
+        function initializePopup() {
+            $(element).addClass('wish-popup-visible');
+        }
+
+        initializePopup();
 
         $(element).find('#open-wish-modal').on('click', function () {
             if ($('#wish-modal').length === 0) {
@@ -45,8 +40,7 @@ define([
                 responsiveClass: false,
                 buttons: false,
                 closed: function () {
-                    console.log('Modal closed.');
-                    setCookie(WISH_POPUP_COOKIE_KEY, 'true', COOKIE_EXPIRY_DAYS);
+                    closePopup();
                 }
             };
 

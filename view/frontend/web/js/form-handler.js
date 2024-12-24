@@ -69,12 +69,10 @@ define(['jquery', 'mage/translate', 'Doroshko_WishReward/js/lotteryWheelWidget',
 
         function displayWheel() {
             initializeWheel();
-
             couponContainer.hide();
         }
 
         function initializeWheel() {
-            console.log(config, 'config');
             wheelBox.lotteryWheel({
                 items: config.wheelSectors,
                 rotationDuration: config.rotationDuration || ROTATION_DURATION,
