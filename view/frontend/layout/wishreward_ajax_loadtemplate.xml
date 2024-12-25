@@ -2,11 +2,18 @@
 <layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <block class="Doroshko\WishReward\Block\WishContent" name="wishreward.content" template="Doroshko_WishReward::content.phtml">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Doroshko\WishReward\ViewModel\WishContentViewModel</argument>
+            </arguments>
             <block name="wishreward.canvas" template="Doroshko_WishReward::components/canvas.phtml" />
             <block name="wishreward.form" template="Doroshko_WishReward::components/form.phtml" />
-            <block name="wishreward.wheel" template="Doroshko_WishReward::components/wheel.phtml" />
             <block name="wishreward.coupon" template="Doroshko_WishReward::components/coupon.phtml" />
             <block name="wishreward.login" template="Doroshko_WishReward::components/login.phtml" />
+            <block name="wishreward.wheel" template="Doroshko_WishReward::components/wheel.phtml">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Doroshko\WishReward\ViewModel\WishContentViewModel</argument>
+                </arguments>
+            </block>
         </block>
     </body>
 </layout>

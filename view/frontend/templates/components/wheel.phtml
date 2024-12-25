@@ -1,3 +1,11 @@
-<div id="wish-wheel-container" class="wish-wheel-container">
-    <div id="wish-wheel-box" class="wish-wheel-box"></div>
-</div>
+<?php
+/** @var \Doroshko\WishReward\ViewModel\WishContentViewModel $viewModel */
+
+$viewModel = $block->getViewModel();
+?>
+
+<?php if ($viewModel->isWheelEnabled()): ?>
+    <div id="wish-wheel-container" class="wish-wheel-container">
+        <div id="wish-wheel-box" class="wish-wheel-box"></div>
+    </div>
+<?php endif; ?>

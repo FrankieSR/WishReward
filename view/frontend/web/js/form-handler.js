@@ -1,6 +1,7 @@
 define(['jquery', 'mage/translate', 'Doroshko_WishReward/js/lotteryWheelWidget', 'mage/validation'], function ($, $t) {
     'use strict';
 
+    console.log(111);
     return function (config, element) {
         const HIDE_ERROR_DURATION = 4000;
         const ROTATION_DURATION = 5000;
@@ -20,7 +21,9 @@ define(['jquery', 'mage/translate', 'Doroshko_WishReward/js/lotteryWheelWidget',
         function initializeUI() {
             couponContainer.hide();
 
-            displayWheel();
+            if (config.showWheel) {
+                displayWheel();
+            }
         }
 
         function handleFormSubmit(event) {
@@ -42,7 +45,6 @@ define(['jquery', 'mage/translate', 'Doroshko_WishReward/js/lotteryWheelWidget',
         }
 
         function handleFormSubmitSuccess(response) {
-            console.log(response);
             if (response.success === false) {
                 $(form).find('textarea').addClass('mage-error');
                 $(form).find('textarea').after(`<div class="mage-error message">${$t("This is not a Christmas greeting")}</div>`);

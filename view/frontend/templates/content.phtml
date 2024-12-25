@@ -1,14 +1,13 @@
 <?php
+/** @var \Doroshko\WishReward\ViewModel\WishContentViewModel $viewModel **/
 
-/**
- * @var $block \Doroshko\WishReward\Block\WishContent
- */
+$viewModel = $block->getViewModel();
 ?>
 
-<?php if ($block->canShowForm()): ?>
+<?php if ($viewModel->canShowForm()): ?>
     <?= $block->getChildHtml("wishreward.canvas") ?>
 
-    <div id="wish-form-container">
+    <div id="wish-form-container" class="<?= !$viewModel->isWheelEnabled() ? 'wheel-disabled' : '' ?>">
         <div class="wish-content-container">
             <?= $block->getChildHtml("wishreward.form") ?>
             <?= $block->getChildHtml("wishreward.wheel") ?>
@@ -21,10 +20,10 @@
         {
             "#wish-form-container": {
                 "Doroshko_WishReward/js/form-handler": {
-                    "ajaxUrl": "<?= $this->escapeUrl($block->getFormActionUrl()) ?>",
-                    "wheelSectors": <?= json_encode($block->getWheelSectors()) ?>,
-                    "rotationDuration": <?= json_encode($block->getRotationDuration()) ?>,
-                    "showWheel": <?= json_encode($block->isWheelEnabled()) ?>
+                    "ajaxUrl": "<?= $this->escapeUrl($viewModel->getFormActionUrl()) ?>",
+                    "wheelSectors": <?= json_encode($viewModel->getWheelSectors()) ?>,
+                    "rotationDuration": <?= json_encode($viewModel->getRotationDuration()) ?>,
+                    "showWheel": <?= json_encode($viewModel->isWheelEnabled()) ?>
                 }
             }
         }

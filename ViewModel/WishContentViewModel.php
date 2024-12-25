@@ -1,36 +1,24 @@
 <?php
+namespace Doroshko\WishReward\ViewModel;
 
-namespace Doroshko\WishReward\Block;
-
-use Magento\Customer\Model\Session;
-use Magento\Framework\View\Element\Template;
 use Doroshko\WishReward\Model\Config;
-use Doroshko\WishReward\ViewModel\WishContentViewModel;
+use Magento\Framework\UrlInterface;
+use Magento\Customer\Model\Session;
 
-class WishContent extends Template
+class WishContentViewModel implements \Magento\Framework\View\Element\Block\ArgumentInterface
 {
-    private Session $customerSession;
     private Config $config;
+    private UrlInterface $urlBuilder;
+    private Session $customerSession;
 
     public function __construct(
-        Template\Context $context,
-        Session $customerSession,
         Config $config,
-        array $data = []
+        UrlInterface $urlBuilder,
+        Session $customerSession
     ) {
-        $this->customerSession = $customerSession;
         $this->config = $config;
-        parent::__construct($context, $data);
-    }
-
-    public function getFormActionUrl(): string
-    {
-        return $this->getUrl('wishreward/ajax/submitwish');
-    }
-
-    public function getLoginUrl(): string
-    {
-        return $this->getUrl('customer/account/login');
+        $this->urlBuilder = $urlBuilder;
+        $this->customerSession = $customerSession;
     }
 
     public function isWheelEnabled(): bool
@@ -56,5 +44,10 @@ class WishContent extends Template
     public function canShowForm(): bool
     {
         return $this->isGuestAllowed() || $this->customerSession->isLoggedIn();
+    }
+
+    public function getFormActionUrl(): string
+    {
+        return $this->urlBuilder->getUrl('wishreward/ajax/submitwish');
     }
 }
