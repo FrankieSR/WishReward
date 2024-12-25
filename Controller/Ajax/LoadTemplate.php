@@ -1,37 +1,49 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Doroshko\WishReward\Controller\Ajax;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\Controller\Result\Json as ResultJson;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Result\PageFactory;
 
 class LoadTemplate extends Action
 {
-    private JsonFactory $jsonFactory;
+    /**
+     * @var JsonFactory
+     */
+    private JsonFactory $resultJsonFactory;
+
+    /**
+     * @var PageFactory
+     */
+    private PageFactory $resultPageFactory;
 
     public function __construct(
-        Context $context,
-        JsonFactory $jsonFactory
+        Context      $context,
+        JsonFactory  $resultJsonFactory,
+        PageFactory  $resultPageFactory
     ) {
-        $this->jsonFactory = $jsonFactory;
         parent::__construct($context);
+        $this->resultJsonFactory = $resultJsonFactory;
+        $this->resultPageFactory = $resultPageFactory;
     }
 
-    public function execute()
+    public function execute(): ResultJson
     {
-        $result = $this->jsonFactory->create();
+        $resultPage = $this->resultPageFactory->create();
+        $resultPage->addHandle('wishreward_ajax_loadtemplate');
 
-        try {
-            $html = $this->_view->getLayout()
-                ->createBlock(\Doroshko\WishReward\Block\WishContent::class)
-                ->setTemplate('Doroshko_WishReward::wish-content.phtml')
-                ->toHtml();
+        $block = $resultPage->getLayout()->getBlock('wishreward.content');
+        $blockHtml = $block ? $block->toHtml() : '';
 
-            return $result->setData(['success' => true, 'html' => $html]);
-        } catch (\Exception $e) {
-            return $result->setData(['success' => false, 'message' => $e->getMessage()]);
-        }
+        /** @var ResultJson $resultJson */
+        $resultJson = $this->resultJsonFactory->create();
+        $resultJson->setData(['html' => $blockHtml]);
+
+        return $resultJson;
     }
 }

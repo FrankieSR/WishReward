@@ -6,15 +6,15 @@
 ?>
 
 <div class="wish-cta" id="wish-container">
-    <div class="wish-cta-image"></div>
-    <div class="wish-cta-content">
-        <h3 class="wish-cta-title"><?= $block->escapeHtml(__('Share your Christmas wish and unlock a special discount!')); ?></h3>
+    <div class="wish-cta__image"></div>
+    <div class="wish-cta__content">
+        <h3 class="wish-cta__title"><?= $block->escapeHtml(__('Share your Christmas wish and unlock a special discount!')); ?></h3>
 
-        <button class="wish-cta-btn" id="open-wish-modal">
+        <button class="wish-cta__button" id="open-wish-modal">
             <span><?= $block->escapeHtml(__('Make a Wish')); ?></span>
         </button>
     </div>
-    <!-- <button class="wish-cta-close"></button> -->
+    <button class="wish-cta__close"></button>
 </div>
 
 <script type="text/x-magento-init">

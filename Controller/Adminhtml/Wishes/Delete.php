@@ -28,7 +28,7 @@ class Delete extends Action
     /**
      * @var ManagerInterface
      */
-    private ManagerInterface $messageManager;
+    protected ManagerInterface $messageManager;
 
     public function __construct(
         Context $context,

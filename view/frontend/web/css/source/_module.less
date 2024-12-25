@@ -1,304 +1,35 @@
 @import '_variables';
-
-@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Roboto:wght@400;700&display=swap');
-
+@import '_mixins';
 
 & when (@media-common =true) {
-    .wish-form-modal {
+    & when (@wish-styles-enabled =true) {
+        .wish-form-modal {
 
-        .modal-header,
-        .modal-content {
-            padding: 0;
-        }
-
-        .modal-inner-wrap,
-        .modal-content {
-            .lib-css(border-radius, @border-radius-lg);
-        }
-
-        .modal-inner-wrap {
-            max-width: 800px;
-            background: @gradient-modal;
-            .lib-css(box-shadow, @box-shadow-modal);
-            .lib-css(font-family, @font-roboto);
-            .lib-css(color, @color-white);
-            z-index: 1000;
-            text-align: center;
-            backdrop-filter: blur(5px);
-            position: relative;
-
-            &::before {
-                display: block;
-                position: absolute;
-                content: '';
-                .lib-css(background-image, @background-snow);
-                background-size: cover;
-                background-repeat: no-repeat;
-                background-position: center;
-                z-index: 10;
+            .modal-header,
+            .modal-content {
+                padding: 0;
             }
-        }
 
-        .action-close {
-            z-index: 10;
+            .modal-inner-wrap,
+            .modal-content {
+                .lib-css(border-radius, @border-radius-lg);
+            }
 
-            &::before {
+            .modal-inner-wrap {
+                max-width: 800px;
+                background: @gradient-modal;
+                .lib-css(box-shadow, @box-shadow-modal);
+                .lib-css(font-family, @font-regular);
                 .lib-css(color, @color-white);
-                .lib-font-size(24);
-            }
-        }
-    }
-
-    .wish-cta {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 300px;
-        background: @gradient-cta;
-        .lib-css(border-radius, @border-radius-lg);
-        .lib-css(box-shadow, @box-shadow-cta);
-        padding: 20px;
-        .lib-css(font-family, @font-roboto);
-        color: @color-dark;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        text-align: center;
-        z-index: 777;
-        display: none;
-
-        &-title {
-            .lib-font-size(18);
-            font-weight: bold;
-            margin: 0 0 10px;
-            .lib-css(font-family, @font-bangers);
-            .lib-line-height(18);
-        }
-
-        &-image {
-            .lib-css(background-image, @background-snow);
-        }
-
-        &-btn {
-            display: block;
-            width: 100%;
-            padding: 14px;
-            background: @gradient-btn;
-            .lib-css(color, @color-white);
-            border: none;
-            .lib-css(border-radius, @border-radius);
-            font-weight: bold;
-            .lib-font-size(18);
-            cursor: pointer;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-            .lib-css(box-shadow, @box-shadow-btn);
-            .lib-css(font-family, @font-roboto);
-            .lib-line-height(1.3);
-
-            &:hover {
-                transform: scale(1.05);
-                background: @gradient-btn-hover;
-                .lib-css(box-shadow, @box-shadow-btn-hover);
-                .lib-css(border, none);
-            }
-        }
-
-        &-close {
-            position: absolute;
-            right: 10px;
-            top: 10px;
-            .lib-css(color, @color-white);
-            z-index: 2;
-            position: relative;
-
-            &:after {
-                display: block;
-                content: '\e616';
-            }
-        }
-    }
-
-    .wish-popup-visible {
-        display: block;
-    }
-
-    #snow-canvas {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 10;
-    }
-
-    .main-wish-content {
-        label {
-            display: block;
-            .lib-css(font-family, @font-bangers);
-            font-weight: bold;
-            .lib-font-size(24);
-            .lib-css(color, @color-gold);
-            margin-bottom: 20px;
-            .lib-line-height(24);
-        }
-
-        .wish-form {
-            position: relative;
-            z-index: 15;
-            width: min(370px, 90%);
-            border: 1px solid @color-white;
-            box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.2);
-            .lib-css(border-radius, @border-radius);
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0), rgba(240, 240, 240, 0.2));
-            backdrop-filter: blur(2px);
-
-            textarea {
-                width: 100%;
-                height: 80px;
-                padding: 10px;
-                background: rgba(255, 255, 255, 0.1);
-                border: 1px solid @color-white;
-                .lib-css(border-radius, @border-radius);
-                .lib-css(color, @color-white);
-                .lib-css(font-family, @font-roboto);
-                .lib-font-size(16);
-                resize: none;
-                box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.2);
-
-                &::placeholder {
-                    color: #cccccc;
-                }
-
-                &:focus {
-                    .lib-css(border-color, @color-gold);
-                    outline: none;
-                }
-            }
-
-            .mage-error {
-                .lib-css(color, @color-error);
-                .lib-font-size(14);
-            }
-        }
-
-        .wish-button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 14px 20px;
-            background: @gradient-btn;
-            .lib-css(color, @color-white);
-            border: none;
-            .lib-css(border-radius, @border-radius);
-            font-weight: bold;
-            .lib-font-size(16);
-            cursor: pointer;
-            .lib-css(box-shadow, @box-shadow-btn);
-            transition: transform 0.3s ease, background-color 0.3s ease;
-            .lib-line-height(1.3);
-
-            &:hover {
-                transform: scale(1.05);
-                background: @gradient-btn-hover;
-                .lib-css(box-shadow, @box-shadow-btn-hover);
-            }
-        }
-    }
-
-    .wish-content-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: relative;
-    }
-
-    .wish-wheel-container {
-        .wheel-pointer {
-            transform: translateX(-50%) rotate(180deg) scale(2) !important;
-        }
-    }
-
-    .wish-coupon-container {
-        min-height: 500px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        h2 {
-            .lib-css(font-family, @font-bangers);
-            font-weight: bold;
-            .lib-font-size(24);
-            margin-bottom: 20px;
-            .lib-line-height(24);
-        }
-
-        p {
-            .lib-font-size(18);
-            .lib-line-height(18);
-        }
-
-        #wish-coupon-code {
-            .lib-css(color, @color-gold);
-            white-space: nowrap;
-        }
-
-        .wish-nocoupon-container {
-            .lib-css(color, @color-gold);
-            .lib-font-size(24);
-            .lib-line-height(24);
-        }
-    }
-}
-
-.media-width(@extremum, @break) when (@extremum ='max') and (@break =@screen__m) {
-    .wish-content-container {
-        flex-direction: column;
-        margin-top: 15vh;
-    }
-
-    .wish-wheel-container {
-        position: absolute;
-        bottom: -15%;
-
-        .wheel {
-            width: 500px !important;
-            height: 500px !important;
-        }
-    }
-
-    .wish-form-modal.modal-popup {
-        .modal-inner-wrap {
-            width: 100%;
-            top: 0;
-            height: 100%;
-            max-height: 100%;
-            margin-top: 0;
-
-            &::before {
-                display: none;
-            }
-
-            .wish-content-container,
-            .wish-modal {
-                height: inherit;
-            }
-
-            .main-wish-content {
-                height: 100vh;
-                overflow: hidden;
-                padding: 0 32px;
-            }
-
-            .wish-form {
-                padding-inline: 24px;
-                padding-top: 80px;
+                z-index: 1000;
+                text-align: center;
+                backdrop-filter: blur(5px);
+                position: relative;
+                min-height: 500px;
 
                 &::before {
                     display: block;
                     position: absolute;
-                    top: -60px;
-                    left: -40px;
-                    width: 350px;
-                    height: 160px;
                     content: '';
                     .lib-css(background-image, @background-snow);
                     background-size: cover;
@@ -306,91 +37,365 @@
                     background-position: center;
                     z-index: 10;
                 }
+            }
+
+            .action-close {
+                z-index: 10;
+
+                &::before {
+                    .lib-css(color, @color-white);
+                    .lib-font-size(24);
+                }
+            }
+        }
+
+        .wish-cta {
+            .lib-css(font-family, @font-regular);
+            .lib-css(border-radius, @border-radius-lg);
+            .lib-css(box-shadow, @box-shadow-cta);
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: @gradient-cta;
+            padding: 24px;
+            color: @color-shadow-night;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            text-align: center;
+            z-index: 777;
+            display: none;
+
+            &__title {
+                .lib-font-size(18);
+                .lib-css(font-family, @font-regular);
+                .lib-line-height(18);
+                font-weight: @font-weight__bold;
+                margin: 0 0 10px;
+            }
+
+            &__button {
+                .lib-css(box-shadow, @box-shadow-btn);
+                .lib-css(font-family, @font-regular);
+                .lib-line-height(1.3);
+                .lib-font-size(18);
+                .lib-css(border-radius, @border-radius);
+                .lib-css(color, @color-white);
+                display: block;
+                width: 100%;
+                padding: 14px;
+                background: @gradient-btn;
+                border: none;
+                font-weight: @font-weight__bold;
+                cursor: pointer;
+                height: 50px;
+                transition: transform 0.3s ease, background-color 0.3s ease;
+
+                &:hover {
+                    .lib-css(box-shadow, @box-shadow-btn-hover);
+                    .lib-css(border, none);
+                    .lib-css(color, @color-white);
+                    transform: scale(1.05);
+                    background: @gradient-btn-hover;
+                }
+            }
+
+            &__close {
+                .lib-icon-font(@_icon-font-content: @icon-remove,
+                    @_icon-font-size: 14px,
+                    @_icon-font-text-hide: true
+                );
+                background-color: transparent;
+                padding: 7px 10px;
+                border: none;
+                position: absolute;
+                right: 0;
+                top: 0;
+                z-index: 2;
+
+                &:hover {
+                    background-color: transparent;
+                    border: none;
+                    transition: all 0.4s;
+                    transform: scale(1.1);
+                }
+            }
+        }
+
+        .wish-popup-visible {
+            display: block;
+        }
+
+        #snow-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .wish-content-container {
+            label {
+                .lib-line-height(24);
+                .lib-css(font-family, @font-regular);
+                .lib-font-size(24);
+                .lib-css(color, @color-sunbeam-gold);
+                display: block;
+                font-weight: @font-weight__bold;
+                margin-bottom: 20px;
+            }
+
+            .wish-form {
+                .lib-css(border-radius, @border-radius);
+                position: relative;
+                z-index: 15;
+                width: min(370px, 90%);
+                border: 1px solid @color-white;
+                box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.2);
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0), rgba(240, 240, 240, 0.2));
+                backdrop-filter: blur(2px);
 
                 textarea {
+                    .lib-form-element-input(textarea,
+                        @_background: rgba(255, 255, 255, 0.1),
+                        @_border: 1px solid @color-white,
+                        @_font-family: @font-regular,
+                        @_font-size: 16px,
+                        @_focus-background: @gradient-cta,
+                        @_border-radius: @border-radius,
+                        @_focus-border: 1px solid @color-sunbeam-gold,
+                        @_width: 100%,
+                        @_height: 80px,
+                        @_padding: 10px,
+                        @_color: @color-white,
+                        @_placeholder-color: @color-white
+                        );
+                    resize: none;
+
+                    &:focus {
+                        .lib-css(border-color, @color-sunbeam-gold);
+                    }
+                }
+
+                .mage-error {
+                    .lib-css(color, @color-danger-crimson);
+                    .lib-font-size(14);
+                }
+            }
+
+            .wish-button {
+                .lib-css(color, @color-white);
+                .lib-font-size(16);
+                .lib-css(border-radius, @border-radius);
+                .lib-css(box-shadow, @box-shadow-btn);
+                .lib-line-height(1.3);
+                height: 50px;
+                display: inline-block;
+                margin-top: 20px;
+                padding: 14px 20px;
+                background: @gradient-btn;
+                border: none;
+                font-weight: @font-weight__bold;
+                cursor: pointer;
+                transition: transform 0.3s ease, background-color 0.3s ease;
+
+                &:hover {
+                    .lib-css(box-shadow, @box-shadow-btn-hover);
+                    transform: scale(1.05);
+                    background: @gradient-btn-hover;
+                }
+            }
+        }
+
+        .wish-content-container {
+            .flex-space-between-center();
+            position: relative;
+        }
+
+        .wish-wheel-container {
+            .wheel-pointer {
+                transform: translateX(-50%) rotate(180deg) scale(2) !important;
+            }
+        }
+
+        .wish-coupon-container {
+            .flex-space-between-center();
+
+            h2 {
+                .lib-css(font-family, @font-regular);
+                .lib-line-height(24);
+                .lib-font-size(24);
+                font-weight: @font-weight__bold;
+                margin-bottom: 20px;
+            }
+
+            p {
+                .lib-font-size(18);
+                .lib-line-height(18);
+            }
+
+            #wish-coupon-code {
+                .lib-css(color, @color-sunbeam-gold);
+                white-space: nowrap;
+            }
+
+            .wish-nocoupon-container {
+                .lib-css(color, @color-sunbeam-gold);
+                .lib-font-size(24);
+                .lib-line-height(24);
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum ='max') and (@break =@screen__m) {
+    & when (@wish-styles-enabled =true) {
+        .wish-cta {
+            width: calc(100% - 80px);
+        }
+
+        .wish-content-container {
+            height: 100vh;
+            margin-top: 15vh;
+            padding: 0 32px;
+            flex-direction: column;
+        }
+
+        .wish-wheel-container {
+            position: absolute;
+            bottom: -15%;
+
+            .wheel {
+                width: 500px !important;
+                height: 500px !important;
+            }
+        }
+
+        .wish-form-modal.modal-popup {
+            .modal-inner-wrap {
+                width: 100%;
+                top: 0;
+                height: 100%;
+                max-height: 100%;
+                margin-top: 0;
+
+                &::before {
+                    display: none;
+                }
+
+                .wish-modal {
+                    height: inherit;
+                }
+
+                .wish-form {
+                    padding-inline: 24px;
+                    padding-top: 80px;
+
+                    &::before {
+                        .lib-css(background-image, @background-snow);
+                        display: block;
+                        position: absolute;
+                        top: -60px;
+                        left: -40px;
+                        width: 350px;
+                        height: 160px;
+                        content: '';
+                        background-size: cover;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        z-index: 10;
+                    }
+
+                    textarea {
+                        height: 200px;
+                    }
+                }
+            }
+
+            .modal-content {
+                height: 100%;
+                overflow: hidden;
+            }
+        }
+
+        #wish-coupon-code {
+            .lib-font-size(28);
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__m) {
+    & when (@wish-styles-enabled =true) {
+        .wish-cta {
+            width: 300px;
+        }
+
+        #wish-coupon-code {
+            .lib-font-size(32);
+        }
+
+        .wish-form-modal {
+            .modal-content {
+                overflow: visible;
+                overflow-y: visible !important;
+            }
+
+            .modal-inner-wrap {
+                margin-top: calc(50vh - 250px);
+
+                &::before {
+                    top: -75px;
+                    left: -60px;
+                    width: 510px;
                     height: 200px;
                 }
             }
         }
 
-        .modal-content {
-            height: 100%;
-        }
-    }
-
-    #wish-coupon-code {
-        .lib-font-size(28);
-    }
-}
-
-.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__m) {
-    #wish-coupon-code {
-        .lib-font-size(32);
-    }
-
-    .wish-form-modal {
-        .modal-content {
-            overflow: visible;
-            overflow-y: visible !important;
+        .wish-form {
+            margin: 40px 0px 30px 60px;
+            padding: 32px 24px;
+            min-width: 350px;
         }
 
-        .modal-inner-wrap {
-            margin-top: calc(50vh - 250px);
+        .wish-content-container {
+            min-height: 500px;
+        }
 
-            &::before {
-                top: -75px;
-                left: -60px;
-                width: 510px;
-                height: 200px;
+        .wish-wheel-container {
+            .wish-wheel-box {
+                transform: rotate(-45deg) translate(5%, 40%);
+                position: absolute;
+                z-index: 14;
+                right: 0;
+                top: 0;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+                border-radius: 50%;
+
+                .wheel {
+                    transform: translateY(6px);
+                }
+
+                .wheel-pointer {
+                    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.5));
+                }
             }
         }
-    }
 
-    .wish-form {
-        margin: 40px 0px 30px 60px;
-        padding: 32px 24px;
-        min-width: 350px;
-    }
+        .wish-login-prompt {
+            .flex-space-between-center();
+            gap: 12px;
 
-    .wish-wheel-container {
-        .wish-wheel-box {
-            transform: rotate(-45deg) translate(5%, 40%);
-            position: absolute;
-            z-index: 14;
-            right: 0;
-            top: 0;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
-            border-radius: 50%;
-
-            .wheel {
-                transform: translateY(6px);
+            p {
+                .lib-css(font-family, @font-regular);
+                .lib-font-size(18);
+                margin-bottom: 0;
             }
 
-            .wheel-pointer {
-                filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.5));
+            .login-link {
+                .lib-css(color, @color-sunbeam-gold);
             }
-        }
-    }
-
-    .wish-content-container,
-    .wish-login-prompt {
-        min-height: 500px;
-    }
-
-    .wish-login-prompt {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 12px;
-
-        p {
-            .lib-css(font-family, @font-roboto);
-            .lib-font-size(18);
-            margin-bottom: 0;
-        }
-
-        .login-link {
-            .lib-css(color, @color-gold);
         }
     }
 }

@@ -75,7 +75,6 @@
             </settings>
         </column>
 
-        <!-- Actions Column -->
         <actionsColumn name="actions" sortOrder="50" class="Magento\Ui\Component\Listing\Columns\Column">
             <settings>
                 <label translate="true">Actions</label>
@@ -88,7 +87,7 @@
                         <item name="message" xsi:type="string" translate="true">Are you sure you want to delete this row?</item>
                     </item>
                     <item name="url" xsi:type="array">
-                        <item name="path" xsi:type="string">wishreward/wishes/delete</item>
+                        <!-- <item name="path" xsi:type="string">wishreward/wishes/delete</item> -->
                         <item name="params" xsi:type="array">
                             <item name="wish_id" xsi:type="string">${wish_id}</item>
                         </item>

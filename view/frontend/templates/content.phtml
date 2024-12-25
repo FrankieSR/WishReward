@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * @var $block \Doroshko\WishReward\Block\WishContent
+ */
+?>
+
+<?php if ($block->canShowForm()): ?>
+    <?= $block->getChildHtml("wishreward.canvas") ?>
+
+    <div id="wish-form-container">
+        <div class="wish-content-container">
+            <?= $block->getChildHtml("wishreward.form") ?>
+            <?= $block->getChildHtml("wishreward.wheel") ?>
+        </div>
+
+        <?= $block->getChildHtml("wishreward.coupon") ?>
+    </div>
+
+    <script type="text/x-magento-init">
+        {
+            "#wish-form-container": {
+                "Doroshko_WishReward/js/form-handler": {
+                    "ajaxUrl": "<?= $this->escapeUrl($block->getFormActionUrl()) ?>",
+                    "wheelSectors": <?= json_encode($block->getWheelSectors()) ?>,
+                    "rotationDuration": <?= json_encode($block->getRotationDuration()) ?>,
+                    "showWheel": <?= json_encode($block->isWheelEnabled()) ?>
+                }
+            }
+        }
+    </script>
+<?php else: ?>
+    <?= $block->getChildHtml("wishreward.login") ?>
+<?php endif; ?>

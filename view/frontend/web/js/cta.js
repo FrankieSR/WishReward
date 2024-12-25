@@ -50,6 +50,7 @@ define([
                 url: ajaxUrl,
                 type: 'GET',
                 success: function (response) {
+                    
                     console.log(response, 'response');
                     $('#wish-modal').html(response.html);
                     $('#wish-modal').trigger('contentUpdated');

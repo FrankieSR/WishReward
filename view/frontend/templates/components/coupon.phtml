@@ -1,0 +1,13 @@
+<div id="wish-coupon-container" class="wish-coupon-container" style="display: none;">
+    <div>
+        <h2> <?= $block->escapeHtml(__('Congratulations!')) ?></h2>
+        <p>
+            <?= $block->escapeHtml(__('Your coupon code is:')) ?>
+            <span id="wish-coupon-code"></span>
+        </p>
+    </div>
+</div>
+
+<div id="wish-nocoupon-container" class="wish-nocoupon-container" style="display: none;">
+    <h2> <?= $block->escapeHtml(__('Maybe next time')) ?></h2>
+</div>
