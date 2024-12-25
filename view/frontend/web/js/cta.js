@@ -1,30 +1,37 @@
 define([
     'jquery',
     'Magento_Ui/js/modal/modal',
-    'mage/apply/main',
-    'mage/validation',
     'Magento_Customer/js/customer-data',
+    'underscore',
+    'mage/validation',
     'domReady!'
-], function ($, modal, mageInit) {
+], function ($, modal, customerData, _) {
     'use strict';
 
-    const WISH_POPUP_COOKIE_KEY = 'wishPopupClosed';
+    const WISH_POPUP_STORAGE_KEY = 'wishPopupClosed';
 
-    return function (config, element) {
+    return (config, element) => {
         const ajaxUrl = config.ajaxUrl;
 
-        function closePopup() {
-            customerData.set(WISH_POPUP_COOKIE_KEY, true);
-        }
+        const closePopup = () => {
+            customerData.set(WISH_POPUP_STORAGE_KEY, true);
+        };
 
-        function initializePopup() {
+        const initializePopup = () => {
+            const isPopupClosed = customerData.get(WISH_POPUP_STORAGE_KEY);
+
+            if (isPopupClosed() === true) return;
+
             $(element).addClass('wish-popup-visible');
-        }
+        };
 
-        initializePopup();
+        const handleCloseClick = () => {
+            closePopup();
+            $(element).hide();
+        };
 
-        $(element).find('#open-wish-modal').on('click', function () {
-            if ($('#wish-modal').length === 0) {
+        const handleOpenWishModalClick = () => {
+            if (!$('#wish-modal').length) {
                 $('body').append('<div id="wish-modal" class="wish-modal" style="display: none;"></div>');
             }
 
@@ -39,9 +46,7 @@ define([
                 innerScroll: true,
                 responsiveClass: false,
                 buttons: false,
-                closed: function () {
-                    closePopup();
-                }
+                closed: closePopup
             };
 
             const wishModal = modal(modalOptions, $('#wish-modal'));
@@ -49,9 +54,7 @@ define([
             $.ajax({
                 url: ajaxUrl,
                 type: 'GET',
-                success: function (response) {
-                    
-                    console.log(response, 'response');
+                success: (response) => {
                     $('#wish-modal').html(response.html);
                     $('#wish-modal').trigger('contentUpdated');
 
@@ -61,11 +64,15 @@ define([
 
                     $('#wish-modal').modal('openModal');
                 },
-                error: function (error) {
-                    console.log(error);
+                error: () => {
                     alert($.mage.__('Failed to load the form. Please try again.'));
                 }
             });
-        });
+        };
+
+        initializePopup();
+
+        $(element).find('.wish-cta__close').on('click', handleCloseClick);
+        $(element).find('#open-wish-modal').on('click', handleOpenWishModalClick);
     };
 });
