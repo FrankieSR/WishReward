@@ -30,7 +30,7 @@
                 <field id="wheel_sectors" translate="label" type="textarea" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Wheel Sectors</label>
                     <comment>
-                        Enter JSON for sectors. Example: [{"id": 1, "label": "Prize 1", "rule_id": 6, "probability": 30}, {"id": 2, "label": "Try Again", "rule_id": null, "probability": 40}]
+                        Enter JSON for sectors. Example: [{"id": 1, "label": "Prize 1", "rule_id": 6, "probability": 30, color: '#fff'}, {"id": 2, "label": "Try Again", "rule_id": null, "probability": 40}]
                     </comment>
                 </field>
                 <field id="rotation_duration" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">

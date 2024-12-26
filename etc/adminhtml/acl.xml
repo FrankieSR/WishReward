@@ -4,7 +4,9 @@
         <resource id="Magento_Backend::admin">
             <resource id="Doroshko_WishReward::main" title="Wish Reward" sortOrder="55">
                 <resource id="Doroshko_WishReward::config" title="Configuration" />
-                <resource id="Doroshko_WishReward::wishes" title="Manage Wishes" />
+                <resource id="Doroshko_WishReward::wishes" title="Wish Rewards" sortOrder="10">
+                    <resource id="Doroshko_WishReward::delete" title="Delete Wishes" sortOrder="20" />
+                </resource>
             </resource>
         </resource>
     </acl>

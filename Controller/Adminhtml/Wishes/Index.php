@@ -21,7 +21,7 @@ class Index extends Action
     {
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('Doroshko_WishReward::wishreward_wishes');
-        $resultPage->getConfig()->getTitle()->prepend(__('Wish List'));
+        $resultPage->getConfig()->getTitle()->prepend(__('List of wishes'));
         return $resultPage;
     }
 }

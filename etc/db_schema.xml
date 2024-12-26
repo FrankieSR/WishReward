@@ -6,15 +6,12 @@
         <column name="wish_message" xsi:type="text" nullable="false" comment="Wish Message"/>
         <column name="created_at" xsi:type="timestamp" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
 
-        <!-- Add primary key -->
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="wish_id"/>
         </constraint>
 
-        <!-- Foreign key for customer_id -->
         <constraint xsi:type="foreign" referenceId="FK_WISHREWARD_WISHES_CUSTOMER_ID" column="customer_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="SET NULL"/>
 
-        <!-- Index on customer_id -->
         <constraint xsi:type="unique" referenceId="UNQ_WISHREWARD_WISHES_CUSTOMER_ID">
             <column name="customer_id"/>
         </constraint>

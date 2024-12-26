@@ -34,11 +34,11 @@ class CouponGenerator
             $coupon = $this->couponFactory->create();
             $coupon->setRuleId($ruleId)
                 ->setCode($couponCode)
-                ->setUsageLimit(1) // Лимит использования купона
-                ->setUsagePerCustomer(1) // Лимит использования на одного клиента
-                ->setExpirationDate($this->getExpirationDate()) // Установка даты истечения
-                ->setCreatedAt($this->dateTime->gmtDate()) // Установка текущей даты
-                ->setType(1); // Тип: вручную созданный купон
+                ->setUsageLimit(1)
+                ->setUsagePerCustomer(1)
+                ->setExpirationDate($this->getExpirationDate())
+                ->setCreatedAt($this->dateTime->gmtDate())
+                ->setType(1);
 
             $coupon->save();
 

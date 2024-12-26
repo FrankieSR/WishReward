@@ -11,9 +11,6 @@ class LocalMLValidator
         $this->loadModel();
     }
 
-    /**
-     * Загружает JSON-модель из файла.
-     */
     private function loadModel(): void
     {
         $modelPath = BP . '/app/code/Doroshko/WishReward/etc/model.json';
@@ -23,20 +20,13 @@ class LocalMLValidator
 
         $this->model = json_decode(file_get_contents($modelPath), true);
 
-        // Проверка структуры модели
         if (!isset($this->model['classes'], $this->model['vocabulary'], $this->model['class_log_prior'], $this->model['feature_log_prob'])) {
             throw new \Exception('ML model structure is invalid');
         }
     }
 
-    /**
-     * Проверяет текст на основе модели и возвращает статус и причину.
-     * @param string $text
-     * @return array
-     */
     public function validateText(string $text): array
     {
-        // Проверка длины текста
         if (mb_strlen($text) < 6) {
             return [
                 'status' => 'invalid',
@@ -44,10 +34,8 @@ class LocalMLValidator
             ];
         }
 
-        // Векторизация текста
         $vectorizedText = $this->vectorize($text);
 
-        // Если вектор пустой, текст невалиден
         if (empty($vectorizedText['validWordCount'])) {
             return [
                 'status' => 'invalid',
@@ -55,7 +43,6 @@ class LocalMLValidator
             ];
         }
 
-        // Проверка количества значимых слов
         if ($vectorizedText['validWordCount'] < 2) {
             return [
                 'status' => 'invalid',
@@ -63,7 +50,6 @@ class LocalMLValidator
             ];
         }
 
-        // Предсказание класса
         $prediction = $this->predict($vectorizedText['vector']);
         if ($prediction === 1) {
             return [
@@ -78,16 +64,10 @@ class LocalMLValidator
         }
     }
 
-    /**
-     * Преобразует текст в числовой вектор на основе словаря модели.
-     * @param string $text
-     * @return array
-     */
     private function vectorize(string $text): array
     {
         $vector = array_fill(0, count($this->model['vocabulary']), 0);
 
-        // Токенизация текста
         $words = preg_split('/\s+/', mb_strtolower(trim($text)), -1, PREG_SPLIT_NO_EMPTY);
 
         $validWordCount = 0;
@@ -106,18 +86,12 @@ class LocalMLValidator
         ];
     }
 
-    /**
-     * Предсказывает класс для заданного вектора текста.
-     * @param array $vector
-     * @return int
-     */
     private function predict(array $vector): int
     {
         $scores = [];
         $nonZeroFeatures = array_filter($vector, fn($count) => $count > 0);
 
         if (empty($nonZeroFeatures)) {
-            // Если вектор пустой или нет совпадений в словаре, возвращаем "невалидный"
             return 0;
         }
 
@@ -135,7 +109,6 @@ class LocalMLValidator
 
         arsort($scores);
 
-        // Проверка значимого преимущества
         $bestScore = reset($scores);
         $secondBestScore = next($scores);
 

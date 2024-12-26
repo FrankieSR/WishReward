@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-
-    <!-- Регистрация CouponGenerator -->
     <type name="Doroshko\WishReward\Model\CouponGenerator">
         <arguments>
             <argument name="couponFactory" xsi:type="object">Magento\SalesRule\Model\CouponFactory</argument>
@@ -9,14 +7,12 @@
         </arguments>
     </type>
 
-    <!-- Регистрация модели конфигурации Config -->
     <type name="Doroshko\WishReward\Model\Config">
         <arguments>
             <argument name="scopeConfig" xsi:type="object">Magento\Framework\App\Config\ScopeConfigInterface</argument>
         </arguments>
     </type>
 
-    <!-- Регистрация коллекции для UI-компонента -->
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
@@ -25,7 +21,6 @@
         </arguments>
     </type>
 
-    <!-- Регистрация Resource Model Wish -->
     <type name="Doroshko\WishReward\Model\ResourceModel\Wish">
         <arguments>
             <argument name="connectionName" xsi:type="string">default</argument>

@@ -5,7 +5,6 @@ namespace Doroshko\WishReward\Block;
 use Magento\Customer\Model\Session;
 use Magento\Framework\View\Element\Template;
 use Doroshko\WishReward\Model\Config;
-use Doroshko\WishReward\ViewModel\WishContentViewModel;
 
 class WishContent extends Template
 {
