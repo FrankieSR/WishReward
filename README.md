@@ -14,6 +14,19 @@ Main modal
 
 ---
 
+## How to install a module
+
+`composer require doroshko/wish-reward`
+
+or
+
+`git clone git@github.com:FrankieSR/WishReward.git app/code/Doroshko/WishReward`
+
+
+then `bin/magento setup:upgrade`
+
+---
+
 ## Features
 
 1. **Wish Submission and Validation**  
