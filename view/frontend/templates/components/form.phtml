@@ -1,13 +1,22 @@
-<form id="wish-form" class="wish-form" data-validate>
-    <label for="wish-message"><?= $block->escapeHtml(__('Write a Christmas wish and spin the wheel')) ?></label>
+<form id="wish-form" 
+      class="wish-form" 
+      data-validate
+      aria-labelledby="wish-form-label"
+      role="form">
+    <label for="wish-message" id="wish-form-label">
+        <?= $block->escapeHtml(__('Write a Christmas wish and spin the wheel')) ?>
+    </label>
     <textarea
         id="wish-message"
         name="wish_message"
         class="required-entry"
         data-validate="{required:true}"
-        placeholder="<?= $block->escapeHtml(__('Type your wish here...')) ?>"></textarea>
+        placeholder="<?= $block->escapeHtml(__('Type your wish here...')) ?>"
+        aria-describedby="wish-message-required"
+        aria-required="true">
+    </textarea>
 
-    <button type="submit" class="wish-button">
+    <button type="submit" class="wish-button" aria-label="Send and claim">
         <span class="button-text"><?= $block->escapeHtml(__('Send and claim')) ?></span>
         <span class="round" />
     </button>

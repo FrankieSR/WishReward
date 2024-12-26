@@ -5,16 +5,16 @@
  */
 ?>
 
-<div class="wish-cta" id="wish-container">
+<div class="wish-cta" id="wish-container" aria-label="Christmas Wish"> 
     <div class="wish-cta__image"></div>
-    <div class="wish-cta__content">
+    <div class="wish-cta__content" aria-live="polite"> 
         <h3 class="wish-cta__title"><?= $block->escapeHtml(__('Share your Christmas wish and unlock a special discount!')); ?></h3>
 
-        <button class="wish-cta__button" id="open-wish-modal">
+        <button class="wish-cta__button" id="open-wish-modal" aria-label="<?= $block->escapeHtmlAttr(__('Make a Wish')); ?>">
             <span><?= $block->escapeHtml(__('Make a Wish')); ?></span>
         </button>
     </div>
-    <button class="wish-cta__close"></button>
+    <button class="wish-cta__close" aria-label="<?= $block->escapeHtmlAttr(__('Close Christmas Wish')); ?>"></button>
 </div>
 
 <script type="text/x-magento-init">

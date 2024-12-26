@@ -18,8 +18,6 @@ define(['jquery', 'mage/translate', 'Doroshko_WishReward/js/lotteryWheelWidget',
         form.on('submit', handleFormSubmit);
 
         function initializeUI() {
-            couponContainer.hide();
-
             if (config.showWheel) {
                 displayWheel();
             }
@@ -70,7 +68,7 @@ define(['jquery', 'mage/translate', 'Doroshko_WishReward/js/lotteryWheelWidget',
 
         function displayWheel() {
             initializeWheel();
-            couponContainer.hide();
+            hideContainer(couponContainer);
         }
 
         function initializeWheel() {
@@ -115,17 +113,28 @@ define(['jquery', 'mage/translate', 'Doroshko_WishReward/js/lotteryWheelWidget',
 
         function displayCoupon(couponCodeValue) {
             couponCodeBlock.text(couponCodeValue);
-            mainContainer.hide();
-            couponContainer.show();
+
+            hideContainer(mainContainer);
+            showContainer(couponContainer);
         }
 
         function displayNoCoupon() {
-            mainContainer.hide();
-            nocouponCodeBlock.show();
+            hideContainer(mainContainer);
+            showContainer(nocouponCodeBlock);
         }
 
         function handleAjaxError(error) {
             console.error('AJAX error:', error);
+        }
+
+        function showContainer(container) {
+            container.show()
+            container.attr('aria-hidden', false);
+        }
+
+        function hideContainer(container) {
+            container.hide()
+            container.attr('aria-hidden', true);
         }
     };
 });
