@@ -163,7 +163,6 @@ define(["jquery", "jquery/ui"], function ($) {
                         const winningItem = this.options.items[targetIndex];
                         const onSpinEndData = { id: winningItem.id, label: winningItem.label, data };
 
-                        console.log(onSpinEndCallback, 'onSpinEndCallback');
                         onSpinEndCallback(onSpinEndData) || this.options.onSpinEnd(onSpinEndData);
                     }
                 }

@@ -1,7 +1,6 @@
 define(['jquery', 'mage/translate', 'Doroshko_WishReward/js/lotteryWheelWidget', 'mage/validation'], function ($, $t) {
     'use strict';
 
-    console.log(111);
     return function (config, element) {
         const HIDE_ERROR_DURATION = 4000;
         const ROTATION_DURATION = 5000;
@@ -95,7 +94,6 @@ define(['jquery', 'mage/translate', 'Doroshko_WishReward/js/lotteryWheelWidget',
         }
 
         function handleSpinSuccess({coupon_code, message, success, sector_id = null, error = null}) {
-            console.log(coupon_code, message, success, sector_id, 'spinResponse');
             if (error) {
                 alert(message || 'An error occurred while spinning the wheel.');
                 return;
@@ -116,7 +114,6 @@ define(['jquery', 'mage/translate', 'Doroshko_WishReward/js/lotteryWheelWidget',
         }
 
         function displayCoupon(couponCodeValue) {
-            console.log(couponCodeValue);
             couponCodeBlock.text(couponCodeValue);
             mainContainer.hide();
             couponContainer.show();
