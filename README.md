@@ -1,15 +1,16 @@
-# ⚠️ Module Under Development ⚠️
-
-> This module is currently in active development and may not be fully functional.  
-> Please use it for testing purposes only. The final version will include additional features, optimizations, and full documentation.
-
----
-
-
 # Magento 2 Module: Christmas & New Year Wish with Lottery Wheel
 
 This module for **Magento 2** implements the following functionality:  
 A customer writes a Christmas or New Year wish, which is validated using a trained model (currently supports validation only for English greetings). After the wish is validated, the customer gets an opportunity to spin a lottery wheel and potentially win a discount, or they can receive a fixed discount for their wish (configurable in the admin panel).
+
+Initial CTA modal
+
+![Customer Wish Reward](docs/images/cta-example.png "CTA Example")
+
+Main modal
+
+![Customer Wish Reward](docs/images/modal-example.png "Modal Example")
+
 
 ---
 
@@ -70,7 +71,7 @@ The `Wheel Sectors` field allows you to define the sectors of the lottery wheel 
   {"label": "No win, sorry", "rule_id": null, "probability": 25}
 ]
 ```
-
+More details in app/code/Doroshko/WishReward/Model/ProbabilityCalculator.php
 ---
 
 ### **How Winning Probability is Calculated**
