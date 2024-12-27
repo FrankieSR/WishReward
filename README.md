@@ -23,7 +23,9 @@ or
 `git clone git@github.com:FrankieSR/WishReward.git app/code/Doroshko/WishReward`
 
 
-then `bin/magento setup:upgrade`
+then 
+`bin/magento mod:en Doroshko_WishReward`
+`bin/magento setup:upgrade`
 
 ---
 
