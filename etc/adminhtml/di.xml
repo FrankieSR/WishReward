@@ -4,6 +4,7 @@
         <arguments>
             <argument name="couponFactory" xsi:type="object">Magento\SalesRule\Model\CouponFactory</argument>
             <argument name="dateTime" xsi:type="object">Magento\Framework\Stdlib\DateTime\DateTime</argument>
+            <argument name="logger" xsi:type="object">Psr\Log\LoggerInterface</argument>
         </arguments>
     </type>
 
@@ -18,28 +19,6 @@
             <argument name="collections" xsi:type="array">
                 <item name="wishreward_wishes_data_source" xsi:type="string">Doroshko\WishReward\Model\ResourceModel\Wish\Collection</item>
             </argument>
-        </arguments>
-    </type>
-
-    <type name="Doroshko\WishReward\Model\ResourceModel\Wish">
-        <arguments>
-            <argument name="connectionName" xsi:type="string">default</argument>
-        </arguments>
-    </type>
-
-    <!-- Регистрация Collection -->
-    <type name="Doroshko\WishReward\Model\ResourceModel\Wish\Collection">
-        <arguments>
-            <argument name="mainTable" xsi:type="string">wishreward_wishes</argument>
-            <argument name="eventPrefix" xsi:type="string">wishreward_wishes_collection</argument>
-        </arguments>
-    </type>
-
-    <!-- Регистрация блока WishContentRenderer -->
-    <type name="Doroshko\WishReward\Block\WishContentRenderer">
-        <arguments>
-            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session</argument>
-            <argument name="config" xsi:type="object">Doroshko\WishReward\Model\Config</argument>
         </arguments>
     </type>
 

@@ -134,6 +134,28 @@
             z-index: 10;
         }
 
+        .wish-login-prompt {
+            .flex-space-between-center();
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            height: @content-height;
+            gap: 12px;
+            max-width: max-content;
+            margin: 0 auto;
+
+            p {
+                .lib-css(font-family, @font-regular);
+                .lib-font-size(18);
+                margin-bottom: 0;
+            }
+
+            .login-link {
+                .lib-css(color, @color-sunbeam-gold);
+                .lib-font-size(24);
+            }
+        }
+
         .wish-content-container {
             label {
                 .lib-line-height(24);
@@ -400,23 +422,6 @@
                 .wheel-pointer {
                     filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.5));
                 }
-            }
-        }
-
-        .wish-login-prompt {
-            .flex-space-between-center();
-            height: @content-height;
-            gap: 12px;
-
-            p {
-                .lib-css(font-family, @font-regular);
-                .lib-font-size(18);
-                margin-bottom: 0;
-            }
-
-            .login-link {
-                .lib-css(color, @color-sunbeam-gold);
-                .lib-font-size(24);
             }
         }
     }

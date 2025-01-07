@@ -33,16 +33,16 @@ class DataProvider extends AbstractDataProvider
                 'totalRecords' => $this->collection->getSize(),
                 'items' => []
             ];
-    
+
             foreach ($this->collection as $item) {
                 $data = $item->getData();
-                $data['customer_id'] = $data['customer_id'] ?? ''; 
-                $data['wish_message'] = trim(preg_replace('/\s+/', ' ', $data['wish_message']));
-                $this->loadedData['items'][] = $data;
+                $this->loadedData['items'][] = [
+                    'customer_id' => $data['customer_id'] ?? '',
+                    'wish_message' => trim(preg_replace('/\s+/', ' ', $data['wish_message'])),
+                ];
             }
         }
-    
+
         return $this->loadedData;
     }
-    
 }

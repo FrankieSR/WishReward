@@ -2,7 +2,7 @@
     "name": "doroshko/wish-reward",
     "description": "A module that provides functionality for collecting wishes from customers and rewards them with a discount, which they receive by spinning a wheel of fortune",
     "type": "magento2-module",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "license": "MIT",
     "authors": [{
         "name": "Artem Doroshko",

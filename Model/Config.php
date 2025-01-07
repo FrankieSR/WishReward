@@ -54,10 +54,15 @@ class Config
         );
 
         if (!$sectorsJson) {
+            $this->logger->warning('No wheel sectors found in configuration.');
             return [];
         }
 
         $sectors = json_decode($sectorsJson, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return [];
+        }
 
         foreach ($sectors as $key => &$sector) {
             if (!isset($sector['id'])) {
