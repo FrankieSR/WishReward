@@ -11,28 +11,42 @@ define([
     const WISH_POPUP_STORAGE_KEY = 'wishPopupClosed';
 
     return (config, element) => {
-        const ajaxUrl = config.ajaxUrl;
+        const { ajaxUrl, errorMessage } = config;
 
+        /**
+         * Closes the popup and stores its state in customerData
+         */
         const closePopup = () => {
             customerData.set(WISH_POPUP_STORAGE_KEY, true);
+            $(element).hide();
         };
 
+        /**
+         * Initializes the popup by checking its state in customerData
+         */
         const initializePopup = () => {
             const isPopupClosed = customerData.get(WISH_POPUP_STORAGE_KEY);
 
-            if (isPopupClosed() === true) return;
+            if (isPopupClosed() === true) {
+                return;
+            }
 
             $(element).addClass('wish-popup-visible');
         };
 
-        const handleCloseClick = () => {
-            closePopup();
-            $(element).hide();
-        };
+        /**
+         * Opens the "Wish" modal with a form
+         */
+        const openWishModal = () => {
+            const modalContainerId = 'wish-modal';
+            let $wishModal = $(`#${modalContainerId}`);
 
-        const handleOpenWishModalClick = () => {
-            if (!$('#wish-modal').length) {
-                $('body').append('<div id="wish-modal" class="wish-modal" style="display: none;"></div>');
+            if (!$wishModal.length) {
+                $wishModal = $('<div>', {
+                    id: modalContainerId,
+                    class: 'wish-modal',
+                    style: 'display: none;'
+                }).appendTo('body');
             }
 
             $(element).hide();
@@ -49,27 +63,52 @@ define([
                 closed: closePopup
             };
 
-            const wishModal = modal(modalOptions, $('#wish-modal'));
+            modal(modalOptions, $wishModal);
 
+            loadWishForm($wishModal);
+        };
+
+        /**
+         * Loads the wish form into the modal via AJAX
+         * @param {jQuery} $wishModal - the modal container
+         */
+        const loadWishForm = ($wishModal) => {
             $.ajax({
                 url: ajaxUrl,
                 type: 'GET',
                 success: (response) => {
-                    $('#wish-modal').html(response.html);
-                    $('#wish-modal').trigger('contentUpdated');
+                    $wishModal.html(response.html);
+                    $wishModal.trigger('contentUpdated');
 
-                    if ($('#wish-form').length > 0) {
-                        $('#wish-form').validation();
+                    const $wishForm = $('#wish-form');
+
+                    if ($wishForm.length > 0) {
+                        $wishForm.validation();
                     }
 
-                    $('#wish-modal').modal('openModal');
+                    $wishModal.modal('openModal');
                 },
                 error: () => {
-                    alert($.mage.__('Failed to load the form. Please try again.'));
+                    alert(errorMessage || $.mage.__('Failed to load the form. Please try again.'));
                 }
             });
         };
 
+        /**
+         * Handles the popup close button click event
+         */
+        const handleCloseClick = () => {
+            closePopup();
+        };
+
+        /**
+         * Handles the "Open Wish Modal" button click event
+         */
+        const handleOpenWishModalClick = () => {
+            openWishModal();
+        };
+
+        // Initialize the popup when the page loads
         initializePopup();
 
         $(element).find('.wish-cta__close').on('click', handleCloseClick);

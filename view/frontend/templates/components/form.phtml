@@ -1,8 +1,8 @@
-<form id="wish-form" 
-      class="wish-form" 
-      data-validate
-      aria-labelledby="wish-form-label"
-      role="form">
+<form id="wish-form"
+    class="wish-form"
+    data-validate
+    aria-labelledby="wish-form-label"
+    role="form">
     <label for="wish-message" id="wish-form-label">
         <?= $block->escapeHtml(__('Write a Christmas wish and spin the wheel')) ?>
     </label>
@@ -16,7 +16,7 @@
         aria-required="true">
     </textarea>
 
-    <button type="submit" class="wish-button" aria-label="Send and claim">
+    <button type="submit" class="wish-button" aria-label=<?= $block->escapeHtmlAttr(__('Send and claim')) ?>>
         <span class="button-text"><?= $block->escapeHtml(__('Send and claim')) ?></span>
         <span class="round" />
     </button>
