@@ -95,7 +95,7 @@ define([
          */
         function handleSpinSuccess({ coupon_code, message, success, sector_id = null, error = null }) {
             if (error) {
-                handleError(message || $t('An error occurred while spinning the wheel.')) // Handle error during spin.
+                handleError(message || $t('An error occurred while spinning the wheel.'))
                 return;
             }
 

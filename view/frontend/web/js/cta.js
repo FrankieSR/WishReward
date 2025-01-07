@@ -89,7 +89,7 @@ define([
                     $wishModal.modal('openModal');
                 },
                 error: () => {
-                    alert(errorMessage || $.mage.__('Failed to load the form. Please try again.'));
+                    console.error(errorMessage || $.mage.__('Failed to load the form. Please try again.'));
                 }
             });
         };
