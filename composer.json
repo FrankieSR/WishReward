@@ -10,8 +10,8 @@
         "role": "Developer"
     }],
     "require": {
-        "php": ">=7.4",
-        "magento/framework": ">=103.0.0"
+        "php": "~7.4.3|~8.0.0",
+        "magento/framework": "102.0.*|103.0.*"
     },
     "autoload": {
         "files": [
